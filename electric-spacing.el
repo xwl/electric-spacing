@@ -38,6 +38,7 @@
 ;;; Code:
 
 (require 'cc-mode)
+(require 'thingatpt)
 
 ;;; electric-spacing minor mode
 
@@ -66,7 +67,8 @@
     (?? . electric-spacing-?)
     (?, . electric-spacing-\,)
     (?~ . electric-spacing-~)
-    (?. . electric-spacing-.)))
+    (?. . electric-spacing-.)
+    (?^ . electric-spacing-self-insert-command)))
 
 (defun electric-spacing-post-self-insert-function ()
   (when (electric-spacing-should-run?)
@@ -198,7 +200,8 @@ so let's not get too insert-happy."
            (electric-spacing-insert ":" 'middle)))
         ((derived-mode-p 'haskell-mode)
          (electric-spacing-insert ":"))
-        ((derived-mode-p 'python-mode 'ess-mode)
+        ((derived-mode-p 'python-mode) (electric-spacing-python-:))
+        ((derived-mode-p 'ess-mode)
          (insert ":"))
         (t
          (electric-spacing-insert ":" 'after))))
@@ -273,6 +276,16 @@ so let's not get too insert-happy."
                 (electric-spacing-insert "*" 'before))
                (t
                 (electric-spacing-insert "*"))))
+
+        ;; Handle python *args and **kwargs
+        ((derived-mode-p 'python-mode)
+         ;; Can only occur after '(' ',' or on a new line, so just check
+         ;; for those. If it's just after a comma then also insert a space
+         ;; before the *.
+         (cond ((looking-back ",") (insert " *"))
+               ((looking-back "[(,^)][ \t]*[*]?") (insert "*"))
+               ;; Othewise act as normal
+               (t (electric-spacing-insert "*"))))
         (t
          (electric-spacing-insert "*"))))
 
@@ -361,6 +374,20 @@ so let's not get too insert-happy."
          (insert "/"))
         (t
          (electric-spacing-insert "/"))))
+
+
+(defun electric-spacing-enclosing-paren ()
+  "Return the opening parenthesis of the enclosing parens, or nil if not inside any parens."
+  (interactive)
+  (let ((ppss (syntax-ppss)))
+    (when (nth 1 ppss)
+      (char-after (nth 1 ppss)))))
+
+(defun electric-spacing-python-: ()
+  (if (and (not (in-string-p))
+           (eq (electric-spacing-enclosing-paren) ?\{))
+      (electric-spacing-insert ":" 'after)
+    (insert ":")))
 
 (provide 'electric-spacing)
 
