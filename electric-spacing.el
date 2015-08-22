@@ -1,6 +1,6 @@
 ;;; electric-spacing.el --- Insert operators with surrounding spaces smartly
 
-;; Copyright (C) 2004, 2005, 2007-2014 Free Software Foundation, Inc.
+;; Copyright (C) 2004, 2005, 2007-2015 Free Software Foundation, Inc.
 
 ;; Author: William Xu <william.xwl@gmail.com>
 ;; Version: 5.0
@@ -168,6 +168,11 @@ so let's not get too insert-happy."
    (t
     (electric-spacing-insert-1 op 'middle))))
 
+(defconst electric-spacing-operators-regexp
+  (regexp-opt
+   (mapcar (lambda (el) (char-to-string (car el)))
+           electric-spacing-rules)))
+
 
 ;;; Fine Tunings
 
@@ -322,6 +327,11 @@ so let's not get too insert-happy."
         ;; exponent notation, e.g. 1e-10: don't space
         ((looking-back "[0-9.]+[eE]")
          (insert "-"))
+
+        ;; a = -9
+        ((and (looking-back (concat electric-spacing-operators-regexp " *"))
+              (not (looking-back "- *")))
+          (electric-spacing-insert "-" 'before))
 
         (t
          (electric-spacing-insert "-"))))
