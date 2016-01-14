@@ -65,6 +65,7 @@
     (?| . electric-spacing-self-insert-command)
   ;  (?: . electric-spacing-:)
     (?? . electric-spacing-?)
+    (?! . electric-spacing-!)
     (?, . electric-spacing-\,)
     (?~ . electric-spacing-~)
   ;  (?. . electric-spacing-.)
@@ -343,6 +344,13 @@ so let's not get too insert-happy."
          (electric-spacing-insert "?"))
         (t
          (electric-spacing-insert "?" 'after))))
+
+(defun electric-spacing-! ()
+  "See `electric-spacing-insert'."
+  (cond (c-buffer-is-cc-mode
+         (electric-spacing-insert "!"))
+        (t
+         (electric-spacing-insert "!" 'after))))
 
 (defun electric-spacing-% ()
   "See `electric-spacing-insert'."
