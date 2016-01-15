@@ -402,10 +402,10 @@
          (insert "/"))
         (t
          (electric-spacing-insert "/"))))
-
 
 (defun electric-spacing-enclosing-paren ()
-  "Return the opening parenthesis of the enclosing parens, or nil if not inside any parens."
+  "Return the opening parenthesis of the enclosing parens, or nil
+   if not inside any parens."
   (interactive)
   (let ((ppss (syntax-ppss)))
     (when (nth 1 ppss)
