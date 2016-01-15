@@ -187,11 +187,10 @@
              (looking-back
               (concat "\\("
                       (regexp-opt
-                       '("#include" "vector" "deque" "list" "map" "stack"
-                         "multimap" "set" "hash_map" "iterator" "template"
-                         "pair" "auto_ptr" "static_cast"
+                       '("#include" "vector" "deque" "list" "map"
+                         "stack" "multimap" "set" "hash_map" "iterator"
+                         "template" "pair" "auto_ptr" "static_cast"
                          "dynmaic_cast" "const_cast" "reintepret_cast"
-
                          "#import"))
                       "\\)\\ *")
               (line-beginning-position)))
