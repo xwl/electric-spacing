@@ -208,7 +208,8 @@
            (electric-spacing-insert ":" 'middle)))
         ((derived-mode-p 'haskell-mode)
          (electric-spacing-insert ":"))
-        ((derived-mode-p 'python-mode) (electric-spacing-python-:))
+        ((derived-mode-p 'python-mode)
+         (electric-spacing-python-:))
         ((derived-mode-p 'ess-mode)
          (insert ":"))
         (t
