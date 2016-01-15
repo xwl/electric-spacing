@@ -385,7 +385,7 @@
                (delete-char -2)
                (insert "=~ "))
            (insert "~")))
-        ((eq major-mode "ess-mode")
+        ((derived-mode-p 'ess-mode)
          (if (looking-back "[=(]")
              (insert "~ "))
          (electric-spacing-insert "%"))
