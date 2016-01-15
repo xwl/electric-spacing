@@ -158,8 +158,8 @@
 
 (defun electric-spacing-lispy (op)
   "We're in a Lisp-ish mode, so let's look for parenthesis.
-Meanwhile, if not found after ( operators are more likely to be function names,
-so let's not get too insert-happy."
+   Meanwhile, if not found after ( operators are more likely to
+   be function names, so let's not get too insert-happy."
   (cond
    ((save-excursion
       (backward-char 1)
