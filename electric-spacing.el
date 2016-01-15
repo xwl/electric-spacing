@@ -334,7 +334,7 @@
          (cond ((or (looking-back "= *") (looking-back "<\\- *"))
                 (electric-spacing-insert "-" 'before))
                ((looking-at "[(\\[] *")
-                (electric-spacing-insert "-" 'middle))
+                (insert "-"))
                ((looking-back "[0-9.]+[eE]")
                 (insert "-"))
                (t
