@@ -177,7 +177,8 @@
    (mapcar (lambda (el) (char-to-string (car el)))
            electric-spacing-rules)))
 
-;;; Fine Tunings
+;;;---------------------------------------------------------------------
+;;; Fine Tunings- eletric-spacing-* functions.
 
 (defun electric-spacing-< ()
   "See `electric-spacing-insert'."
