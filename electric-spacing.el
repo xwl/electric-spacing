@@ -394,9 +394,12 @@
                (insert "=~ "))
            (insert "~")))
         ((derived-mode-p 'ess-mode)
-         (if (looking-back "[=(]")
-             (insert "~ "))
-         (electric-spacing-insert "%"))
+         (cond ((looking-back "\\(<-\\|[=,]\\) *")
+                (electric-spacing-insert "~" 'before))
+               ((looking-back "( *")
+                (insert "~"))
+               (t
+                (electric-spacing-insert "~"))))
         (t
          (insert "~"))))
 
