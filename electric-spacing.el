@@ -128,11 +128,13 @@
     (`after (insert op " "))
     (_
      (let ((begin? (bolp)))
-       (unless (or (looking-back (regexp-opt
-                                  (mapcar 'char-to-string
-                                          (mapcar 'car electric-spacing-rules)))
-                                 (line-beginning-position))
-                   begin?)
+       (unless
+           (or (looking-back
+                (regexp-opt
+                 (mapcar 'char-to-string
+                         (mapcar 'car electric-spacing-rules)))
+                (line-beginning-position))
+               begin?)
          (insert " "))
        (insert op " ")
        (when begin?
