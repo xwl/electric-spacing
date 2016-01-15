@@ -118,11 +118,10 @@
 
 (defun electric-spacing-insert-1 (op &optional only-where)
   "Insert operator OP with surrounding spaces.
-e.g., `=' becomes ` = ', `+=' becomes ` += '.
-
-When `only-where' is 'after, we will insert space at back only;
-when `only-where' is 'before, we will insert space at front only;
-when `only-where' is 'middle, we will not insert space."
+   e.g., `=' becomes ` = ', `+=' becomes ` += '.
+    - When `only-where' is 'after, we will insert space at back only;
+    - when `only-where' is 'before, we will insert space at front only;
+    - when `only-where' is 'middle, we will not insert space."
   (pcase only-where
     (`before (insert " " op))
     (`middle (insert op))
