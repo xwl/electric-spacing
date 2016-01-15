@@ -84,13 +84,14 @@
 ;;;###autoload
 (define-minor-mode electric-spacing-mode
   "Toggle automatic surrounding space insertion (Electric Spacing mode).
-With a prefix argument ARG, enable Electric Spacing mode if ARG is
-positive, and disable it otherwise.  If called from Lisp, enable
-the mode if ARG is omitted or nil.
+   With a prefix argument ARG, enable Electric Spacing mode if
+   ARG is positive, and disable it otherwise.  If called from
+   Lisp, enable the mode if ARG is omitted or nil.
 
-This is a local minor mode.  When enabled, typing an operator automatically
-inserts surrounding spaces.  e.g., `=' becomes ` = ',`+=' becomes ` += '.  This
-is very handy for many programming languages."
+   This is a local minor mode.  When enabled, typing an operator
+   automatically inserts surrounding spaces.  e.g., `=' becomes `
+   = ',`+=' becomes ` += '.  This is very handy for many
+   programming languages."
   :global nil
   :group 'electricity
   :lighter " _+_"
