@@ -385,6 +385,10 @@
                (delete-char -2)
                (insert "=~ "))
            (insert "~")))
+        ((eq major-mode "ess-mode")
+         (if (looking-back "[=(]")
+             (insert "~ "))
+         (electric-spacing-insert "%"))
         (t
          (insert "~"))))
 
