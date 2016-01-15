@@ -360,7 +360,7 @@
 (defun electric-spacing-% ()
   "See `electric-spacing-insert'."
   (cond (c-buffer-is-cc-mode
-         ;; ,----
+         ;; ,----[ cases ]
          ;; | a % b;
          ;; | printf("%d %d\n", a % b);
          ;; `----
