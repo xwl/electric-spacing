@@ -322,16 +322,24 @@
 
 (defun electric-spacing-- ()
   "See `electric-spacing-insert'."
-  (cond ((and (or
-               c-buffer-is-cc-mode
-               (eq major-mode "ess-mode"))
-          (looking-back "\\- *"))
+  (cond ((and c-buffer-is-cc-mode (looking-back "\\- *"))
          (when (looking-back "[a-zA-Z0-9_] +\\- *")
            (save-excursion
              (backward-char 2)
              (delete-horizontal-space)))
          (electric-spacing-insert "-" 'middle)
          (indent-according-to-mode))
+
+        ((derived-mode-p 'ess-mode)
+         (cond ((or (looking-back "= *") (looking-back "<\\- *"))
+                (electric-spacing-insert "-" 'before))
+               ((looking-at "[(\\[] *")
+                (electric-spacing-insert "-" 'middle))
+               ((looking-back "[0-9.]+[eE]")
+                (insert "-"))
+               (t
+                (electric-spacing-insert "-"))))
+
         ;; exponent notation, e.g. 1e-10: don't space
         ((looking-back "[0-9.]+[eE]")
          (insert "-"))
