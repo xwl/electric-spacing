@@ -331,7 +331,7 @@
         ((derived-mode-p 'ess-mode)
          (cond ((or (looking-back "[=~,] *") (looking-back "<- *"))
                 (electric-spacing-insert "-" 'before))
-               ((looking-back "[([{] *")
+               ((looking-back "[([{/^] *")
                 (insert "-"))
                ((looking-back "[0-9.]+[eE]")
                 (insert "-"))
