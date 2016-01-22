@@ -80,7 +80,6 @@
         (delete-char -1)
         (funcall rule)))))
 
-
 ;;;###autoload
 (define-minor-mode electric-spacing-mode
   "Toggle automatic surrounding space insertion (Electric Spacing mode).
@@ -178,7 +177,7 @@
            electric-spacing-rules)))
 
 ;;;---------------------------------------------------------------------
-;;; Fine Tunings- eletric-spacing-* functions.
+;;; Fine Tunings - eletric-spacing-* functions.
 
 (defun electric-spacing-< ()
   "See `electric-spacing-insert'."
@@ -329,7 +328,6 @@
              (delete-horizontal-space)))
          (electric-spacing-insert "-" 'middle)
          (indent-according-to-mode))
-
         ((derived-mode-p 'ess-mode)
          (cond ((or (looking-back "[=~,] *") (looking-back "<- *"))
                 (electric-spacing-insert "-" 'before))
@@ -341,7 +339,6 @@
                 (insert "-"))
                (t
                 (electric-spacing-insert "-"))))
-
         ;; exponent notation, e.g. 1e-10: don't space
         ((looking-back "[0-9.]+[eE]")
          (insert "-"))
