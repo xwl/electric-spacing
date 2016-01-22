@@ -25,7 +25,7 @@
 ;; Smart Operator mode is a minor mode which automatically inserts
 ;; surrounding spaces around operator symbols.  For example, `='
 ;; becomes ` = ', `+=' becomes ` += '.  This is most handy for writing
-;; C-style source code.
+;; C-style source code. Also follows the R-style when in ess-mode.
 ;;
 ;; Type `M-x electric-spacing-mode' to toggle this minor mode.
 
