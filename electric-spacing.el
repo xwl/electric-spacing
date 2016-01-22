@@ -331,11 +331,13 @@
          (indent-according-to-mode))
 
         ((derived-mode-p 'ess-mode)
-         (cond ((or (looking-back "[=,] *") (looking-back "<- *"))
+         (cond ((or (looking-back "[=~,] *") (looking-back "<- *"))
                 (electric-spacing-insert "-" 'before))
-               ((looking-back "[([] *")
+               ((looking-back "[([{] *")
                 (insert "-"))
                ((looking-back "[0-9.]+[eE]")
+                (insert "-"))
+               ((looking-back "^\\s-*")
                 (insert "-"))
                (t
                 (electric-spacing-insert "-"))))
