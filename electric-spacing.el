@@ -65,7 +65,7 @@
     (?& . electric-spacing-&)
     (?? . electric-spacing-?)
     (?! . electric-spacing-!)
-    (?, . electric-spacing-\,)
+    ;; (?, . electric-spacing-\,)
     (?~ . electric-spacing-~)
   ;  (?/ . electric-spacing-/)
   ;  (?: . electric-spacing-:)
