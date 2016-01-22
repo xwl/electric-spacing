@@ -1,6 +1,6 @@
 ;;; electric-spacing.el --- Insert operators with surrounding spaces smartly
 
-;; Copyright (C) 2004, 2005, 2007-2015 Free Software Foundation, Inc.
+;; Copyright (C) 2004, 2005, 2007-2016 Free Software Foundation, Inc.
 
 ;; Author: William Xu <william.xwl@gmail.com>
 ;; Version: 5.0
