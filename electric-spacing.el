@@ -398,6 +398,8 @@
                 (electric-spacing-insert "~" 'before))
                ((looking-back "( *")
                 (insert "~"))
+               ((looking-back "^\\s-*")
+                (insert "~"))
                (t
                 (electric-spacing-insert "~"))))
         (t
