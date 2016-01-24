@@ -204,6 +204,20 @@
         (t
          (electric-spacing-insert ":" 'after))))
 
+(defun electric-spacing-? ()
+  "See `electric-spacing-insert'."
+  (cond (c-buffer-is-cc-mode
+         (electric-spacing-insert "?"))
+        (t
+         (electric-spacing-insert "?" 'after))))
+
+(defun electric-spacing-! ()
+  "See `electric-spacing-insert'."
+  (cond (c-buffer-is-cc-mode
+         (electric-spacing-insert "!"))
+        (t
+         (electric-spacing-insert "!" 'after))))
+
 (defun electric-spacing-< ()
   "See `electric-spacing-insert'."
   (cond
@@ -330,20 +344,6 @@
           (electric-spacing-insert "-" 'before))
         (t
          (electric-spacing-insert "-"))))
-
-(defun electric-spacing-? ()
-  "See `electric-spacing-insert'."
-  (cond (c-buffer-is-cc-mode
-         (electric-spacing-insert "?"))
-        (t
-         (electric-spacing-insert "?" 'after))))
-
-(defun electric-spacing-! ()
-  "See `electric-spacing-insert'."
-  (cond (c-buffer-is-cc-mode
-         (electric-spacing-insert "!"))
-        (t
-         (electric-spacing-insert "!" 'after))))
 
 (defun electric-spacing-% ()
   "See `electric-spacing-insert'."
