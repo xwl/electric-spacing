@@ -201,15 +201,7 @@
 
 (defun electric-spacing-: ()
   "See `electric-spacing-insert'."
-  (cond (c-buffer-is-cc-mode
-         (if (looking-back "\\?.+")
-             (electric-spacing-insert ":")
-           (electric-spacing-insert ":" 'middle)))
-        ((derived-mode-p 'haskell-mode)
-         (electric-spacing-insert ":"))
-        ((derived-mode-p 'python-mode)
-         (electric-spacing-python-:))
-        ((derived-mode-p 'ess-mode)
+  (cond ((derived-mode-p 'ess-mode)
          (insert ":"))
         (t
          (electric-spacing-insert ":" 'after))))
