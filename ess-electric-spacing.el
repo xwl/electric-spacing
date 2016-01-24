@@ -220,22 +220,29 @@
 
 (defun electric-spacing-% ()
   "See `electric-spacing-insert'."
-  (cond (c-buffer-is-cc-mode
+  (cond ((derived-mode-p 'ess-mode)
          ;; ,----[ cases ]
-         ;; | a % b;
-         ;; | printf("%d %d\n", a % b);
+         ;; | a %*% b
+         ;; | a %/% b
+         ;; | a %% b
+         ;; | a %>% b
+         ;; | a %o% b
+         ;; | a %in% b
+         ;; | sprintf("%d %d\n", a, b)
          ;; `----
-         (if (and (looking-back "\".*")
-                  (not (looking-back "\",.*")))
-             (insert "%")
-           (electric-spacing-insert "%")))
+         (if (or (looking-back "%[*/>]? *")
+                 (looking-back "%\\(o\\|in\\) *")
+                 (and (looking-back "\".*")
+                      (not (looking-back "\",.*"))))
+             (electric-spacing-insert "%" 'after)
+           (electric-spacing-insert "%" 'before)))
         ;; If this is a comment or string, we most likely
         ;; want no spaces - probably string formatting
-        ((and (derived-mode-p 'python-mode)
+        ((and (derived-mode-p 'ess-mode)
               (electric-spacing-document?))
-         (insert "%"))
+         (electric-spacing-insert "%" 'after))
         (t
-         (electric-spacing-insert "%"))))
+         (electric-spacing-insert "%" 'after))))
 
 (defun electric-spacing-< ()
   "See `electric-spacing-insert'."
