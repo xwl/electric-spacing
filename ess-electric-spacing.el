@@ -179,6 +179,31 @@
 ;;;---------------------------------------------------------------------
 ;;; Fine Tunings - eletric-spacing-* functions.
 
+(defun electric-spacing-\, ()
+  "See `electric-spacing-insert'."
+  (electric-spacing-insert "," 'after))
+
+(defun electric-spacing-. ()
+  "See `electric-spacing-insert'."
+  (cond ((and electric-spacing-double-space-docs
+              (electric-spacing-document?))
+         (electric-spacing-insert "." 'after)
+         (insert " "))
+        ((or (looking-back "[0-9]")
+             (and (derived-mode-p 'ess-mode)
+                  (looking-back "[a-z]")))
+         (insert "."))
+        (t
+         (electric-spacing-insert "." 'after)
+         (insert " "))))
+
+(defun electric-spacing-: ()
+  "See `electric-spacing-insert'."
+  (cond ((derived-mode-p 'ess-mode)
+         (insert ":"))
+        (t
+         (electric-spacing-insert ":" 'after))))
+
 (defun electric-spacing-< ()
   "See `electric-spacing-insert'."
   (cond
@@ -198,42 +223,6 @@
     (backward-char))
    (t
     (electric-spacing-insert "<"))))
-
-(defun electric-spacing-: ()
-  "See `electric-spacing-insert'."
-  (cond ((derived-mode-p 'ess-mode)
-         (insert ":"))
-        (t
-         (electric-spacing-insert ":" 'after))))
-
-(defun electric-spacing-\, ()
-  "See `electric-spacing-insert'."
-  (electric-spacing-insert "," 'after))
-
-(defun electric-spacing-. ()
-  "See `electric-spacing-insert'."
-  (cond ((and electric-spacing-double-space-docs
-              (electric-spacing-document?))
-         (electric-spacing-insert "." 'after)
-         (insert " "))
-        ((or (looking-back "[0-9]")
-             (or (and c-buffer-is-cc-mode
-                      (looking-back "[a-z]"))
-                 (and
-                  (derived-mode-p 'python-mode 'ruby-mode)
-                  (looking-back "[a-z\)]"))
-                 (and
-                  (derived-mode-p 'js-mode 'js2-mode)
-                  (looking-back "[a-z\)$]"))))
-         (insert "."))
-        ((derived-mode-p 'cperl-mode 'perl-mode 'ruby-mode)
-         ;; Check for the .. range operator
-         (if (looking-back ".")
-             (insert ".")
-           (insert " . ")))
-        (t
-         (electric-spacing-insert "." 'after)
-         (insert " "))))
 
 (defun electric-spacing-& ()
   "See `electric-spacing-insert'."
