@@ -206,14 +206,14 @@
 
 (defun electric-spacing-? ()
   "See `electric-spacing-insert'."
-  (cond (c-buffer-is-cc-mode
+  (cond ((derived-mode-p 'ess-mode)
          (electric-spacing-insert "?"))
         (t
          (electric-spacing-insert "?" 'after))))
 
 (defun electric-spacing-! ()
   "See `electric-spacing-insert'."
-  (cond (c-buffer-is-cc-mode
+  (cond ((derived-mode-p 'ess-mode)
          (electric-spacing-insert "!"))
         (t
          (electric-spacing-insert "!" 'after))))
