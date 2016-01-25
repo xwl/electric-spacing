@@ -303,6 +303,10 @@
         (t
          (electric-spacing-insert "*"))))
 
+(defun electric-spacing-/ ()
+  "See `electric-spacing-insert'."
+  (electric-spacing-insert "/" 'middle))
+
 (defun electric-spacing-+ ()
   "See `electric-spacing-insert'."
   (cond ((derived-mode-p 'ess-mode)
@@ -384,10 +388,6 @@
                 (electric-spacing-insert "~"))))
         (t
          (insert "~"))))
-
-(defun electric-spacing-/ ()
-  "See `electric-spacing-insert'."
-  (electric-spacing-insert "/" 'middle))
 
 (defun electric-spacing-enclosing-paren ()
   "Return the opening parenthesis of the enclosing parens, or nil
