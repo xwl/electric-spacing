@@ -55,6 +55,7 @@
 (defvar electric-spacing-rules
   '((?= . electric-spacing-self-insert-command)
     (?| . electric-spacing-self-insert-command)
+    (?& . electric-spacing-self-insert-command)
   ;  (?^ . electric-spacing-self-insert-command)
     (?< . electric-spacing-<)
     (?> . electric-spacing->)
@@ -62,7 +63,6 @@
     (?+ . electric-spacing-+)
     (?- . electric-spacing--)
     (?* . electric-spacing-*)
-    (?& . electric-spacing-&)
     (?? . electric-spacing-?)
     (?! . electric-spacing-!)
     ;; (?, . electric-spacing-\,)
