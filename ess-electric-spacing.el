@@ -287,36 +287,17 @@
 
 (defun electric-spacing-* ()
   "See `electric-spacing-insert'."
-  (cond (c-buffer-is-cc-mode
+  (cond ((derived-mode-p 'ess-mode)
          ;; ,----[ cases ]
-         ;; | a * b;
-         ;; | char *a;
-         ;; | char **b;
-         ;; | (*a)->func();
-         ;; | *p++;
-         ;; | *a = *b;
+         ;; | a * b
+         ;; | a %*% b
+         ;; | a**b = a^b
          ;; `----
-         (cond ((looking-back (concat (electric-spacing-c-types) " *" ))
-                (electric-spacing-insert "*" 'before))
-               ((looking-back "\\* *")
+         (cond ((looking-back "% *")
                 (electric-spacing-insert "*" 'middle))
-               ((looking-back "^[ (]*")
-                (electric-spacing-insert "*" 'middle)
-                (indent-according-to-mode))
-               ((looking-back "= *")
-                (electric-spacing-insert "*" 'before))
-               (t
-                (electric-spacing-insert "*"))))
-        ;; Handle python *args and **kwargs
-        ((derived-mode-p 'python-mode)
-         ;; Can only occur after '(' ',' or on a new line, so just check
-         ;; for those. If it's just after a comma then also insert a
-         ;; space before the *.
-         (cond ((looking-back ",")
-                (insert " *"))
-               ((looking-back "[(,^)][ \t]*[*]?")
-                (insert "*"))
-               ;; Othewise act as normal
+               ((looking-back " \\* ")
+                (delete-char -3)
+                (insert "^"))
                (t
                 (electric-spacing-insert "*"))))
         (t
