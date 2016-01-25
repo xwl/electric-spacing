@@ -260,7 +260,8 @@
 
 (defun electric-spacing-> ()
   "See `electric-spacing-insert'."
-  (cond ((and c-buffer-is-cc-mode (looking-back " - "))
+  (cond ((and (derived-mode-p 'ess-mode)
+              (looking-back " - "))
          (delete-char -3)
          (insert "->"))
         (t
