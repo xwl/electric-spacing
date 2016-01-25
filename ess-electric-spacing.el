@@ -37,7 +37,6 @@
 
 ;;; Code:
 
-(require 'cc-mode)
 (require 'thingatpt)
 
 ;;; electric-spacing minor mode
@@ -138,9 +137,6 @@
        (insert op " ")
        (when begin?
          (indent-according-to-mode))))))
-
-(defun electric-spacing-c-types ()
-  (concat c-primitive-type-key "?"))
 
 (defun electric-spacing-document? ()
   (nth 8 (syntax-ppss)))
