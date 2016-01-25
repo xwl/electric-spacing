@@ -258,6 +258,14 @@
         (t
          (electric-spacing-insert "%" 'after))))
 
+(defun electric-spacing-> ()
+  "See `electric-spacing-insert'."
+  (cond ((and c-buffer-is-cc-mode (looking-back " - "))
+         (delete-char -3)
+         (insert "->"))
+        (t
+         (electric-spacing-insert ">"))))
+
 (defun electric-spacing-< ()
   "See `electric-spacing-insert'."
   (cond
@@ -333,14 +341,6 @@
                 (electric-spacing-insert "*"))))
         (t
          (electric-spacing-insert "*"))))
-
-(defun electric-spacing-> ()
-  "See `electric-spacing-insert'."
-  (cond ((and c-buffer-is-cc-mode (looking-back " - "))
-         (delete-char -3)
-         (insert "->"))
-        (t
-         (electric-spacing-insert ">"))))
 
 (defun electric-spacing-+ ()
   "See `electric-spacing-insert'."
