@@ -397,12 +397,6 @@
     (when (nth 1 ppss)
       (char-after (nth 1 ppss)))))
 
-(defun electric-spacing-python-: ()
-  (if (and (not (in-string-p))
-           (eq (electric-spacing-enclosing-paren) ?\{))
-      (electric-spacing-insert ":" 'after)
-    (insert ":")))
-
 (provide 'electric-spacing)
 
 ;;; electric-spacing.el ends here
