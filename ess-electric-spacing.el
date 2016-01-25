@@ -269,23 +269,14 @@
 
 (defun electric-spacing-< ()
   "See `electric-spacing-insert'."
-  (cond
-   ((or (and c-buffer-is-cc-mode
-             (looking-back
-              (concat "\\("
-                      (regexp-opt
-                       '("#include" "vector" "deque" "list" "map"
-                         "stack" "multimap" "set" "hash_map" "iterator"
-                         "template" "pair" "auto_ptr" "static_cast"
-                         "dynmaic_cast" "const_cast" "reintepret_cast"
-                         "#import"))
-                      "\\)\\ *")
-              (line-beginning-position)))
-        (derived-mode-p 'sgml-mode))
-    (insert "<>")
-    (backward-char))
-   (t
-    (electric-spacing-insert "<"))))
+  (cond ((and (derived-mode-p 'ess-mode)
+              (looking-at " - "))
+         (delete-char 3)
+         (insert "<-"))
+        (t
+         (electric-spacing-insert "<"))))
+
+;; STOP -------------------------------------
 
 (defun electric-spacing-& ()
   "See `electric-spacing-insert'."
