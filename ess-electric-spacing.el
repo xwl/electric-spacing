@@ -37,8 +37,6 @@
 
 ;;; Code:
 
-(require 'thingatpt)
-
 ;;; electric-spacing minor mode
 
 (defcustom electric-spacing-double-space-docs t
