@@ -366,14 +366,14 @@
 
 (defun electric-spacing-~ ()
   "See `electric-spacing-insert'."
-  ;; First class regex operator =~ langs
-  (cond ((derived-mode-p 'ruby-mode 'perl-mode 'cperl-mode)
-         (if (looking-back "= ")
-             (progn
-               (delete-char -2)
-               (insert "=~ "))
-           (insert "~")))
-        ((derived-mode-p 'ess-mode)
+  (cond ((derived-mode-p 'ess-mode)
+         ;; ,----[ cases ]
+         ;; | a ~ b
+         ;; | ~a + b
+         ;; | x <- ~a + b
+         ;; | x = ~a + b
+         ;; | c(~a + b, ~x + y)
+         ;; `----
          (cond ((looking-back "\\(<-\\|[=,]\\) *")
                 (electric-spacing-insert "~" 'before))
                ((looking-back "( *")
