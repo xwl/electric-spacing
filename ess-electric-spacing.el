@@ -370,14 +370,9 @@
         (t
          (insert "~"))))
 
-(defun electric-spacing-enclosing-paren ()
-  "Return the opening parenthesis of the enclosing parens, or nil
-   if not inside any parens."
-  (interactive)
-  (let ((ppss (syntax-ppss)))
-    (when (nth 1 ppss)
-      (char-after (nth 1 ppss)))))
-
 (provide 'electric-spacing)
 
 ;;; electric-spacing.el ends here
+(shell-command
+ "cp -v ess-electric-spacing.el ~/.emacs.d/lisp/electric-spacing.el"
+ nil nil)
