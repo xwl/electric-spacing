@@ -274,24 +274,14 @@
         (t
          (electric-spacing-insert "<"))))
 
-;; STOP -------------------------------------
-
 (defun electric-spacing-& ()
   "See `electric-spacing-insert'."
-  (cond (c-buffer-is-cc-mode
+  (cond ((derived-mode-p 'ess-mode)
          ;; ,----[ cases ]
-         ;; | char &a = b; // FIXME
-         ;; | void foo(const int& a);
-         ;; | char *a = &b;
-         ;; | int c = a & b;
+         ;; | a & b;
          ;; | a && b;
          ;; `----
-         (cond ((looking-back (concat (electric-spacing-c-types) " *" ))
-                (electric-spacing-insert "&" 'after))
-               ((looking-back "= *")
-                (electric-spacing-insert "&" 'before))
-               (t
-                (electric-spacing-insert "&"))))
+         (electric-spacing-insert "&"))
         (t
          (electric-spacing-insert "&"))))
 
