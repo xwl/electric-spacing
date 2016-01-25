@@ -261,18 +261,16 @@
 (defun electric-spacing-> ()
   "See `electric-spacing-insert'."
   (cond ((and (derived-mode-p 'ess-mode)
-              (looking-back " - "))
-         (delete-char -3)
-         (insert "->"))
+              (looking-at " *="))
+         (electric-spacing-insert ">" 'before))
         (t
          (electric-spacing-insert ">"))))
 
 (defun electric-spacing-< ()
   "See `electric-spacing-insert'."
   (cond ((and (derived-mode-p 'ess-mode)
-              (looking-at " - "))
-         (delete-char 3)
-         (insert "<-"))
+              (looking-at " *="))
+         (electric-spacing-insert "<" 'before))
         (t
          (electric-spacing-insert "<"))))
 
