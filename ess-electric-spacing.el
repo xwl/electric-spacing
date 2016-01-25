@@ -369,6 +369,3 @@
 (provide 'electric-spacing)
 
 ;;; electric-spacing.el ends here
-(shell-command
- "cp -v ess-electric-spacing.el ~/.emacs.d/lisp/electric-spacing.el"
- nil nil)
