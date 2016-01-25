@@ -387,14 +387,7 @@
 
 (defun electric-spacing-/ ()
   "See `electric-spacing-insert'."
-  ;; *nix shebangs #!
-  (cond ((and (eq 1 (line-number-at-pos))
-              (save-excursion
-                (move-beginning-of-line nil)
-                (looking-at "#!")))
-         (insert "/"))
-        (t
-         (electric-spacing-insert "/"))))
+  (electric-spacing-insert "/" 'middle))
 
 (defun electric-spacing-enclosing-paren ()
   "Return the opening parenthesis of the enclosing parens, or nil
