@@ -284,10 +284,6 @@
         (t
          (electric-spacing-insert "*"))))
 
-(defun electric-spacing-/ ()
-  "See `electric-spacing-insert'."
-  (electric-spacing-insert "/" 'middle))
-
 (defun electric-spacing-+ ()
   "See `electric-spacing-insert'."
   (cond ((derived-mode-p 'ess-mode)
