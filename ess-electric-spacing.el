@@ -274,17 +274,6 @@
         (t
          (electric-spacing-insert "<"))))
 
-(defun electric-spacing-& ()
-  "See `electric-spacing-insert'."
-  (cond ((derived-mode-p 'ess-mode)
-         ;; ,----[ cases ]
-         ;; | a & b;
-         ;; | a && b;
-         ;; `----
-         (electric-spacing-insert "&"))
-        (t
-         (electric-spacing-insert "&"))))
-
 (defun electric-spacing-* ()
   "See `electric-spacing-insert'."
   (cond ((derived-mode-p 'ess-mode)
