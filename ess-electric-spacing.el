@@ -214,7 +214,21 @@
 (defun electric-spacing-! ()
   "See `electric-spacing-insert'."
   (cond ((derived-mode-p 'ess-mode)
-         (electric-spacing-insert "!"))
+         ;; ,----[ cases ]
+         ;; | a != b
+         ;; | x <- !y
+         ;; | x = !y
+         ;; | x & !y
+         ;; | x | !y
+         ;; | x + !y
+         ;; | x * !y
+         ;; | y[!a, !b]
+         ;; | if (!x) ...
+         ;; `----
+         (cond ((looking-back "[([] *")
+                (insert "!"))
+               ((looking-back "[-,=|&*+] *")
+                (electric-spacing-insert "!" 'before))))
         (t
          (electric-spacing-insert "!" 'after))))
 
