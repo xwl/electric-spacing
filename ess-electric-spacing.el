@@ -305,27 +305,45 @@
 
 (defun electric-spacing-+ ()
   "See `electric-spacing-insert'."
-  (cond ((and c-buffer-is-cc-mode (looking-back "\\+ *"))
-         (when (looking-back "[a-zA-Z0-9_] +\\+ *")
-           (save-excursion
-             (backward-char 2)
-             (delete-horizontal-space)))
-         (electric-spacing-insert "+" 'middle)
-         (indent-according-to-mode))
+  (cond ((derived-mode-p 'ess-mode)
+         ;; ,----[ cases ]
+         ;; | a + b
+         ;; | y ~ a + b
+         ;; | 10e+5
+         ;; | 10E+5
+         ;; `----
+         (if (looking-back "[0-9.]+[eE]")
+             (insert "+")
+           (electric-spacing-insert "+")))
         (t
          (electric-spacing-insert "+"))))
 
 (defun electric-spacing-- ()
   "See `electric-spacing-insert'."
-  (cond ((and c-buffer-is-cc-mode (looking-back "\\- *"))
-         (when (looking-back "[a-zA-Z0-9_] +\\- *")
-           (save-excursion
-             (backward-char 2)
-             (delete-horizontal-space)))
-         (electric-spacing-insert "-" 'middle)
-         (indent-according-to-mode))
-        ((derived-mode-p 'ess-mode)
-         (cond ((or (looking-back "[=~,] *") (looking-back "<- *"))
+  (cond ((derived-mode-p 'ess-mode)
+         ;; ,----[ cases ]
+         ;; | a - b
+         ;; | a * (-b)
+         ;; | a * -b
+         ;; | a + -b
+         ;; | a & -5 > b
+         ;; | a | -5 > b
+         ;; | a < -5
+         ;; | a > -5
+         ;; | y ~ -1+x
+         ;; | a = -5
+         ;; | a <- -5
+         ;; | a[-b, -x]
+         ;; | c(1, -2)
+         ;; | 10e-5
+         ;; | 10E-5
+         ;; | 10^-5
+         ;; | 10/-5
+         ;; | 10/-5
+         ;; |    -5
+         ;; `----
+         (cond ((or (looking-back "[=~,*+<>&|] *")
+                    (looking-back "<- *"))
                 (electric-spacing-insert "-" 'before))
                ((looking-back "[([{/^] *")
                 (insert "-"))
@@ -339,10 +357,10 @@
         ((looking-back "[0-9.]+[eE]")
          (insert "-"))
         ;; a = -9
-        ((and (looking-back
-               (concat electric-spacing-operators-regexp " *"))
-              (not (looking-back "- *")))
-          (electric-spacing-insert "-" 'before))
+        ((and
+          (looking-back (concat electric-spacing-operators-regexp " *"))
+          (not (looking-back "- *")))
+         (electric-spacing-insert "-" 'before))
         (t
          (electric-spacing-insert "-"))))
 
