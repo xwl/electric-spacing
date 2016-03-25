@@ -181,10 +181,28 @@
               (electric-spacing-document?))
          (electric-spacing-insert "." 'after)
          (insert " "))
-        ((or (looking-back "[0-9]")
-             (and (derived-mode-p 'ess-mode)
-                  (looking-back "[a-z]")))
-         (insert "."))
+        ((derived-mode-p 'ess-mode)
+         ;; ,----[ cases ]
+         ;; | read.table()
+         ;; | plot.default()
+         ;; | 3.14
+         ;; | 2 + .5
+         ;; | x <- .5
+         ;; | x = .5
+         ;; | c(.9, .5)
+         ;; | function(x, ...)
+         ;; `----
+         (cond ((or (looking-back "[0-9({[.] *")
+                    (looking-back "[A-Za-z]"))
+                (insert "."))
+               ((looking-back "[,*+-=] *")
+                (electric-spacing-insert "." 'before))
+               (t
+                (electric-spacing-insert "." 'after))))
+        ;; ((or (looking-back "[0-9]")
+        ;;      (and (derived-mode-p 'ess-mode)
+        ;;           (looking-back "[a-z]")))
+        ;;  (insert "."))
         (t
          (electric-spacing-insert "." 'after)
          (insert " "))))
@@ -207,19 +225,23 @@
   "See `electric-spacing-insert'."
   (cond ((derived-mode-p 'ess-mode)
          ;; ,----[ cases ]
-         ;; | a != b
          ;; | x <- !y
          ;; | x = !y
          ;; | x & !y
          ;; | x | !y
-         ;; | x + !y
-         ;; | x * !y
+         ;; | a != b
+         ;; | 2 != 4
          ;; | y[!a, !b]
          ;; | if (!x) ...
+         ;; | if (a) { !b } ...
+         ;; | x + !y
+         ;; | x * !y
          ;; `----
          (cond ((looking-back "[([] *")
                 (insert "!"))
-               ((looking-back "[-,=|&*+] *")
+               ((looking-back "[{-,=|&*+] *")
+                (electric-spacing-insert "!" 'before))
+               (t
                 (electric-spacing-insert "!" 'before))))
         (t
          (electric-spacing-insert "!" 'after))))
