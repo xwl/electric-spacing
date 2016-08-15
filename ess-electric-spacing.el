@@ -190,12 +190,13 @@
          ;; | x <- .5
          ;; | x = .5
          ;; | c(.9, .5)
+         ;; | lm(y ~ .)
          ;; | function(x, ...)
          ;; `----
          (cond ((or (looking-back "[0-9({[.] *")
                     (looking-back "[A-Za-z]"))
                 (insert "."))
-               ((looking-back "[,*+-=] *")
+               ((looking-back "[,*+-=~] *")
                 (electric-spacing-insert "." 'before))
                (t
                 (electric-spacing-insert "." 'after))))
@@ -334,6 +335,7 @@
          ;; | a < -5
          ;; | a > -5
          ;; | y ~ -1+x
+         ;; | y ~ . - x
          ;; | a = -5
          ;; | a <- -5
          ;; | a[-b, -x]
@@ -344,8 +346,9 @@
          ;; | 10/-5
          ;; | 10/-5
          ;; |    -5
+         ;; |    -.5
          ;; `----
-         (cond ((or (looking-back "[=~,*+<>&|] *")
+         (cond ((or (looking-back "[=~,*+<>&|.] *")
                     (looking-back "<- *"))
                 (electric-spacing-insert "-" 'before))
                ((looking-back "[([{/^] *")
