@@ -376,11 +376,12 @@ so let's not get too insert-happy."
 
 (defun electric-spacing-/ ()
   "See `electric-spacing-insert'."
-  ;; *nix shebangs #!
-  (cond ((and (eq 1 (line-number-at-pos))
-              (save-excursion
-                (move-beginning-of-line nil)
-                (looking-at "#!")))
+  ;; *nix shebangs #! and comment in empty lines //
+  (cond ((or (and (eq 1 (line-number-at-pos))
+                  (save-excursion
+                    (move-beginning-of-line nil)
+                    (looking-at "#!")))
+             (= (current-indentation) (- (line-end-position) (line-beginning-position))))
          (insert "/"))
         (t
          (electric-spacing-insert "/"))))
