@@ -192,6 +192,7 @@
          ;; | c(.9, .5)
          ;; | lm(y ~ .)
          ;; | function(x, ...)
+         ;; | lm(y ~ .)
          ;; `----
          (cond ((or (looking-back "[0-9({[.] *")
                     (looking-back "[A-Za-z]"))
@@ -379,8 +380,9 @@
          ;; | x <- ~a + b
          ;; | x = ~a + b
          ;; | c(~a + b, ~x + y)
+         ;; | update(model, . ~ .)
          ;; `----
-         (cond ((looking-back "\\(<-\\|[=,]\\) *")
+         (cond ((looking-back "\\(<-\\|[=,.]\\) *")
                 (electric-spacing-insert "~" 'before))
                ((looking-back "( *")
                 (insert "~"))
