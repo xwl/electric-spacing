@@ -54,6 +54,7 @@
 
 (defvar electric-spacing-rules
   '((?= . electric-spacing-self-insert-command)
+    (?! . electric-spacing-!)
     (?< . electric-spacing-<)
     (?> . electric-spacing->)
     (?% . electric-spacing-%)
@@ -173,6 +174,18 @@ so let's not get too insert-happy."
 
 
 ;;; Fine Tunings
+
+(defun electric-spacing-! ()
+  "See `electric-spacing-insert'."
+  ;; ,----[ cases ]
+  ;; | (!a), !a
+  ;; | a != b, a !== b
+  ;; | !!a
+  ;; | #!
+  ;; `----
+  (if (looking-back "[a-z]")
+      (electric-spacing-insert "!" 'before)
+    (electric-spacing-insert "!" 'middle)))
 
 (defun electric-spacing-< ()
   "See `electric-spacing-insert'."
