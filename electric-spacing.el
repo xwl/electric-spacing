@@ -182,8 +182,9 @@ so let's not get too insert-happy."
   ;; | a != b, a !== b
   ;; | !!a
   ;; | #!
+  ;; | a = !b
   ;; `----
-  (if (looking-back "[a-z]")
+  (if (looking-back "[a-z]\\|= ")
       (electric-spacing-insert "!" 'before)
     (electric-spacing-insert "!" 'middle)))
 
