@@ -234,9 +234,10 @@ so let's not get too insert-happy."
          (if (looking-back ".")
              (insert ".")
            (insert " . ")))
+        ;; if in empty line, insert "." and indent
         (t
-         (electric-spacing-insert "." 'after)
-         (insert " "))))
+         (electric-spacing-insert "." 'middle)
+         (indent-according-to-mode))))
 
 (defun electric-spacing-& ()
   "See `electric-spacing-insert'."
