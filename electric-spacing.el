@@ -70,6 +70,11 @@
     (?. . electric-spacing-.)
     (?^ . electric-spacing-self-insert-command)))
 
+(defconst electric-spacing-operators-regexp
+  (regexp-opt
+   (mapcar (lambda (el) (char-to-string (car el)))
+           electric-spacing-rules)))
+
 (defun electric-spacing-post-self-insert-function ()
   (when (electric-spacing-should-run?)
     (let ((rule (cdr (assq last-command-event electric-spacing-rules))))
@@ -126,9 +131,7 @@ when `only-where' is 'middle, we will not insert space."
     (`after (insert op " "))
     (_
      (let ((begin? (bolp)))
-       (unless (or (looking-back (regexp-opt
-                                  (mapcar 'char-to-string
-                                          (mapcar 'car electric-spacing-rules)))
+       (unless (or (looking-back electric-spacing-operators-regexp
                                  (line-beginning-position))
                    begin?)
          (insert " "))
@@ -167,11 +170,6 @@ so let's not get too insert-happy."
     (electric-spacing-insert-1 op 'before))
    (t
     (electric-spacing-insert-1 op 'middle))))
-
-(defconst electric-spacing-operators-regexp
-  (regexp-opt
-   (mapcar (lambda (el) (char-to-string (car el)))
-           electric-spacing-rules)))
 
 
 ;;; Fine Tunings
