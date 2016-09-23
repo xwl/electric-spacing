@@ -395,7 +395,10 @@ so let's not get too insert-happy."
                 (looking-at "#!")))
          (insert "/"))
         (t
-         (electric-spacing-insert "/"))))
+         (electric-spacing-insert "/")
+         ;; Fix indentation in JavaScript modes
+         (when (derived-mode-p 'js2-mode 'js-mode)
+           (indent-according-to-mode)))))
 
 
 (defun electric-spacing-enclosing-paren ()
