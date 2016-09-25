@@ -267,6 +267,7 @@ so let's not get too insert-happy."
          ;; | char *a;
          ;; | char **b;
          ;; | (*a)->func();
+         ;; | if(*p)
          ;; | *p++;
          ;; | *a = *b;
          ;; `----
@@ -277,6 +278,8 @@ so let's not get too insert-happy."
                ((looking-back "^[ (]*")
                 (electric-spacing-insert "*" 'middle)
                 (indent-according-to-mode))
+               ((looking-back "(*")
+                (electric-spacing-insert "*" 'middle))
                ((looking-back "= *")
                 (electric-spacing-insert "*" 'before))
                (t
