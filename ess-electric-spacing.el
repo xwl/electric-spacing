@@ -120,6 +120,7 @@
     (`before (insert " " op))
     (`middle (insert op))
     (`after (insert op " "))
+    (`both (insert " " op " "))
     (_
      (let ((begin? (bolp)))
        (unless
@@ -193,6 +194,8 @@
          ;; | lm(y ~ .)
          ;; | function(x, ...)
          ;; | lm(y ~ .)
+         ;; | .Machine$double.xmin
+         ;; | fun <- .Call(...)
          ;; `----
          (cond ((or (looking-back "[0-9({[.] *")
                     (looking-back "[A-Za-z]"))
@@ -200,7 +203,7 @@
                ((looking-back "[,*+-=~] *")
                 (electric-spacing-insert "." 'before))
                (t
-                (electric-spacing-insert "." 'after))))
+                (insert "."))))
         ;; ((or (looking-back "[0-9]")
         ;;      (and (derived-mode-p 'ess-mode)
         ;;           (looking-back "[a-z]")))
@@ -297,16 +300,21 @@
          ;; | a * b
          ;; | a %*% b
          ;; | a**b = a^b
+         ;; | y ~ a + . * b
          ;; `----
          (cond ((looking-back "% *")
                 (electric-spacing-insert "*" 'middle))
                ((looking-back " \\* ")
                 (delete-char -3)
                 (insert "^"))
+               ((looking-back "[~.] *")
+                (electric-spacing-insert "*" 'both))
                (t
                 (electric-spacing-insert "*"))))
         (t
          (electric-spacing-insert "*"))))
+
+
 
 (defun electric-spacing-+ ()
   "See `electric-spacing-insert'."
@@ -314,12 +322,21 @@
          ;; ,----[ cases ]
          ;; | a + b
          ;; | y ~ a + b
+         ;; | y ~ . + b
          ;; | 10e+5
          ;; | 10E+5
          ;; `----
-         (if (looking-back "[0-9.]+[eE]")
-             (insert "+")
-           (electric-spacing-insert "+")))
+         (cond ((looking-back "[~.] *")
+                (electric-spacing-insert "+" 'both))
+               ((looking-back "[([{/^] *")
+                (insert "+"))
+               ((looking-back "[0-9.]+[eE]")
+                (insert "+"))
+               ((looking-back "^\\s-*")
+                (insert "+"))
+               (t
+                (electric-spacing-insert "+")))
+         )
         (t
          (electric-spacing-insert "+"))))
 
