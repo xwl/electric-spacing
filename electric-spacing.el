@@ -331,6 +331,10 @@ so let's not get too insert-happy."
         ((looking-back "( *")
          (electric-spacing-insert "+" 'middle))
 
+        ;; j = ++i;
+        ((looking-back "= *")
+         (electric-spacing-insert "+" 'before))
+
         (t
          (electric-spacing-insert "+"))))
 
