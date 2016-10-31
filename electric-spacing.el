@@ -253,11 +253,14 @@ so let's not get too insert-happy."
          ;; | int c = a & b;
          ;; | a && b;
          ;; | scanf ("%d", &i);
+         ;; | func(&i)
          ;; `----
          (cond ((looking-back (concat (electric-spacing-c-types) " *" ))
                 (electric-spacing-insert "&" 'after))
                ((looking-back "= *")
                 (electric-spacing-insert "&" 'before))
+               ((looking-back "( *")
+                (electric-spacing-insert "&" 'middle))
                ((looking-back ", *")
                 (electric-spacing-insert "&" 'before))
                (t
@@ -276,6 +279,7 @@ so let's not get too insert-happy."
          ;; | *p++;
          ;; | *a = *b;
          ;; | printf("%d", *ip);
+         ;; | func(*p);
          ;; `----
          (cond ((looking-back (concat (electric-spacing-c-types) " *" ))
                 (electric-spacing-insert "*" 'before))
@@ -284,6 +288,8 @@ so let's not get too insert-happy."
                ((looking-back "^[ (]*")
                 (electric-spacing-insert "*" 'middle)
                 (indent-according-to-mode))
+               ((looking-back "( *")
+                (electric-spacing-insert "*" 'middle))
                ((looking-back ", *")
                 (electric-spacing-insert "*" 'before))
                ((looking-back "= *")
@@ -320,6 +326,11 @@ so let's not get too insert-happy."
              (delete-horizontal-space)))
          (electric-spacing-insert "+" 'middle)
          (indent-according-to-mode))
+
+        ;; func(++i);
+        ((looking-back "( *")
+         (electric-spacing-insert "+" 'middle))
+
         (t
          (electric-spacing-insert "+"))))
 
@@ -341,6 +352,10 @@ so let's not get too insert-happy."
         ((and (looking-back (concat electric-spacing-operators-regexp " *"))
               (not (looking-back "- *")))
           (electric-spacing-insert "-" 'before))
+
+        ;; func(--i)
+        ((looking-back "( *")
+         (electric-spacing-insert "-" 'middle))
 
         (t
          (electric-spacing-insert "-"))))
