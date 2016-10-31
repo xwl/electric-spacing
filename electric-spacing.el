@@ -192,6 +192,9 @@ so let's not get too insert-happy."
                       "\\)\\ *")
               (line-beginning-position)))
         (derived-mode-p 'sgml-mode))
+    (if (and c-buffer-is-cc-mode
+             (looking-back "^#\\(include\\|import\\) *"))
+        (electric-spacing-insert " " 'middle))
     (insert "<>")
     (backward-char))
    (t
