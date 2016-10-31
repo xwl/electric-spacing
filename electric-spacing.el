@@ -252,10 +252,13 @@ so let's not get too insert-happy."
          ;; | char *a = &b;
          ;; | int c = a & b;
          ;; | a && b;
+         ;; | scanf ("%d", &i);
          ;; `----
          (cond ((looking-back (concat (electric-spacing-c-types) " *" ))
                 (electric-spacing-insert "&" 'after))
                ((looking-back "= *")
+                (electric-spacing-insert "&" 'before))
+               ((looking-back ", *")
                 (electric-spacing-insert "&" 'before))
                (t
                 (electric-spacing-insert "&"))))
@@ -272,6 +275,7 @@ so let's not get too insert-happy."
          ;; | (*a)->func();
          ;; | *p++;
          ;; | *a = *b;
+         ;; | printf("%d", *ip);
          ;; `----
          (cond ((looking-back (concat (electric-spacing-c-types) " *" ))
                 (electric-spacing-insert "*" 'before))
@@ -280,6 +284,8 @@ so let's not get too insert-happy."
                ((looking-back "^[ (]*")
                 (electric-spacing-insert "*" 'middle)
                 (indent-according-to-mode))
+               ((looking-back ", *")
+                (electric-spacing-insert "*" 'before))
                ((looking-back "= *")
                 (electric-spacing-insert "*" 'before))
                (t
