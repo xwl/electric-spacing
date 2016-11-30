@@ -135,11 +135,13 @@ e.g., `=' becomes ` = ', `+=' becomes ` += '.
 
 When `only-where' is 'after, we will insert space at back only;
 when `only-where' is 'before, we will insert space at front only;
-when `only-where' is 'middle, we will not insert space."
+when `only-where' is 'middle, we will not insert space;
+when `only-where' is 'both, insert space before and after the operator."
   (pcase only-where
     (`before (insert " " op))
     (`middle (insert op))
     (`after (insert op " "))
+    (`both (insert " " op " "))
     (_
      (let ((begin? (bolp)))
        (unless (or (looking-back (regexp-opt
@@ -292,6 +294,8 @@ so let's not get too insert-happy."
          ;; | a && b;
          ;; | scanf ("%d", &i);
          ;; | func(&i)
+         ;; | if (i-- && j)
+         ;; | if (i++ && j)
          ;; `----
          (cond ((looking-back (concat (electric-spacing-c-types) " *" ))
                 (electric-spacing-insert "&" 'after))
@@ -299,7 +303,7 @@ so let's not get too insert-happy."
                 (electric-spacing-insert "&" 'before))
                ((looking-back "( *")
                 (electric-spacing-insert "&" 'middle))
-               ((looking-back ", *")
+               ((looking-back "[\\+,-] *")
                 (electric-spacing-insert "&" 'before))
                (t
                 (electric-spacing-insert "&"))))
@@ -318,6 +322,11 @@ so let's not get too insert-happy."
          ;; | *a = *b;
          ;; | printf("%d", *ip);
          ;; | func(*p);
+         ;; | i + *ip;
+         ;; | i - *ip;
+         ;; | i++ * j;
+         ;; | i-- * j;
+         ;; | i && *ip;
          ;; `----
          (cond ((looking-back (concat (electric-spacing-c-types) " *" ))
                 (electric-spacing-insert "*" 'before))
@@ -330,7 +339,9 @@ so let's not get too insert-happy."
                 (electric-spacing-insert "*" 'middle))
                ((looking-back ", *")
                 (electric-spacing-insert "*" 'before))
-               ((looking-back "= *")
+               ((looking-back "\\(--\\|\\+\\+\\) *")
+                (electric-spacing-insert "*" 'both))
+               ((looking-back "[\\+&=-] *")
                 (electric-spacing-insert "*" 'before))
                (t
                 (electric-spacing-insert "*"))))
@@ -349,7 +360,10 @@ so let's not get too insert-happy."
 
 (defun electric-spacing-> ()
   "See `electric-spacing-insert'."
-  (cond ((and c-buffer-is-cc-mode (looking-back " - "))
+  ;; i-- > j
+  (cond ((looking-back "-- *")
+         (electric-spacing-insert ">" 'both))
+        ((and c-buffer-is-cc-mode (looking-back " - "))
          (delete-char -3)
          (insert "->"))
         (t
