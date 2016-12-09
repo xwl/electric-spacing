@@ -69,6 +69,7 @@ to enable only in control statements."
 
 (defvar electric-spacing-rules
   '((?= . electric-spacing-self-insert-command)
+    (?! . electric-spacing-!)
     (?< . electric-spacing-<)
     (?> . electric-spacing->)
     (?% . electric-spacing-%)
@@ -85,6 +86,11 @@ to enable only in control statements."
     (?. . electric-spacing-.)
     (?\( . electric-spacing-left-paren)
     (?^ . electric-spacing-self-insert-command)))
+
+(defconst electric-spacing-operators-regexp
+  (regexp-opt
+   (mapcar (lambda (el) (char-to-string (car el)))
+           electric-spacing-rules)))
 
 (defun electric-spacing-post-self-insert-function ()
   (when (electric-spacing-should-run?)
@@ -142,9 +148,7 @@ when `only-where' is 'middle, we will not insert space."
     (`after (insert op " "))
     (_
      (let ((begin? (bolp)))
-       (unless (or (looking-back (regexp-opt
-                                  (mapcar 'char-to-string
-                                          (mapcar 'car electric-spacing-rules)))
+       (unless (or (looking-back electric-spacing-operators-regexp
                                  (line-beginning-position))
                    begin?)
          (insert " "))
@@ -184,13 +188,21 @@ so let's not get too insert-happy."
    (t
     (electric-spacing-insert-1 op 'middle))))
 
-(defconst electric-spacing-operators-regexp
-  (regexp-opt
-   (mapcar (lambda (el) (char-to-string (car el)))
-           electric-spacing-rules)))
-
 
 ;;; Fine Tunings
+
+(defun electric-spacing-! ()
+  "See `electric-spacing-insert'."
+  ;; ,----[ cases ]
+  ;; | (!a), !a
+  ;; | a != b, a !== b
+  ;; | !!a
+  ;; | #!
+  ;; | a = !b
+  ;; `----
+  (if (looking-back "[a-z]\\|= ")
+      (electric-spacing-insert "!" 'before)
+    (electric-spacing-insert "!" 'middle)))
 
 (defun electric-spacing-< ()
   "See `electric-spacing-insert'."
@@ -277,9 +289,10 @@ so let's not get too insert-happy."
          (if (looking-back ".")
              (insert ".")
            (insert " . ")))
+        ;; if in empty line, insert "." and indent
         (t
-         (electric-spacing-insert "." 'after)
-         (insert " "))))
+         (electric-spacing-insert "." 'middle)
+         (indent-according-to-mode))))
 
 (defun electric-spacing-& ()
   "See `electric-spacing-insert'."
@@ -449,7 +462,10 @@ so let's not get too insert-happy."
                 (looking-at "#!")))
          (insert "/"))
         (t
-         (electric-spacing-insert "/"))))
+         (electric-spacing-insert "/")
+         ;; Fix indentation in JavaScript modes
+         (when (derived-mode-p 'js2-mode 'js-mode)
+           (indent-according-to-mode)))))
 
 
 (defun electric-spacing-enclosing-paren ()
