@@ -27,5 +27,9 @@ following to your config[1]:
 Note that `electric-spacing-mode` is not a global minor mode, and so must
 be enabled separately for each major mode.
 
+To enable electric-spacing-mode for R, include in your init file the following:
+
+    (require 'electric-spacing-r)
+    (add-hook 'ess-mode-hook #'electric-spacing-mode)
 
 [1] For emacs versions < 24 you may need to [define a wrapper function](http://emacs.stackexchange.com/questions/5358/proper-way-to-enable-minor-mode) to enable the mode unconditionally.
