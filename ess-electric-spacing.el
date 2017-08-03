@@ -1,9 +1,9 @@
-;;; electric-spacing.el --- Insert operators with surrounding spaces smartly
+;;; electric-spacing-r.el --- Insert operators with surrounding spaces smartly
 
 ;; Copyright (C) 2004, 2005, 2007-2016 Free Software Foundation, Inc.
 
 ;; Author: William Xu <william.xwl@gmail.com>
-;; Version: 5.0
+;; Version: 5.0.1
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -25,9 +25,14 @@
 ;; Smart Operator mode is a minor mode which automatically inserts
 ;; surrounding spaces around operator symbols.  For example, `='
 ;; becomes ` = ', `+=' becomes ` += '.  This is most handy for writing
-;; C-style source code. Also follows the R-style when in ess-mode.
+;; C-style source code.  Also follows the R-style when in ess-mode.
 ;;
 ;; Type `M-x electric-spacing-mode' to toggle this minor mode.
+
+;;; Contributions
+
+;; Contributions made by Walmes Zeviani <walmeszeviani@gmail.com> to
+;; adapt the Smart Operator mode to R-style source code.
 
 ;;; Acknowledgements
 
@@ -192,8 +197,8 @@
          ;; | x = .5
          ;; | c(.9, .5)
          ;; | lm(y ~ .)
+         ;; | update(model, . ~ . + I(x^2))
          ;; | function(x, ...)
-         ;; | lm(y ~ .)
          ;; | .Machine$double.xmin
          ;; | fun <- .Call(...)
          ;; `----
@@ -314,8 +319,6 @@
         (t
          (electric-spacing-insert "*"))))
 
-
-
 (defun electric-spacing-+ ()
   "See `electric-spacing-insert'."
   (cond ((derived-mode-p 'ess-mode)
@@ -410,6 +413,6 @@
         (t
          (insert "~"))))
 
-(provide 'electric-spacing)
+(provide 'electric-spacing-r)
 
-;;; electric-spacing.el ends here
+;;; electric-spacing-r.el ends here
