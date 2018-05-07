@@ -67,9 +67,11 @@
     (?% . electric-spacing-%)
     (?~ . electric-spacing-~)
     (?. . electric-spacing-.)
-    (?, . electric-spacing-\,)
-    (?: . electric-spacing-:)
-    (?? . electric-spacing-?)
+    (?{ . electric-spacing-{)
+    (?( . electric-spacing-\()
+    ;; (?, . electric-spacing-\,)
+    ;; (?: . electric-spacing-:)
+    ;; (?? . electric-spacing-?)
   ))
 
 (defun electric-spacing-post-self-insert-function ()
@@ -332,17 +334,14 @@
          ;; | a %in% b
          ;; | sprintf("%d %d\n", a, b)
          ;; `----
-         (if (or (looking-back "[%][*/>]? *")
-                 (looking-back "[%][a-zA-Z0-9_]+ *"))
-             (electric-spacing-insert "%" 'after)
-           (electric-spacing-insert "%")))
-        ;; If this is a comment or string, we most likely
-        ;; want no spaces - probably string formatting
-        ((and (derived-mode-p 'ess-mode)
-              (electric-spacing-document?))
-         (electric-spacing-insert "%"))
+         (cond ((looking-back "[%][*/>a-zA-Z0-9_]* *")
+                (electric-spacing-insert "%" 'after))
+               ((looking-back "[a-zA-Z0-9_] *")
+                (electric-spacing-insert "%" 'before))
+               (t
+                (insert "%"))))
         (t
-         (electric-spacing-insert "%" 'after))))
+         (insert "%"))))
 
 (defun electric-spacing-~ ()
   "See `electric-spacing-insert'."
@@ -384,6 +383,8 @@
          ;; | lm(y ~ .)
          ;; | update(model, . ~ . + I(x^2))
          ;; | function(x, ...)
+         ;; | obj$.x
+         ;; | obj@.x
          ;; | .Machine$double.xmin
          ;; | fun <- .Call(...)
          ;; `----
@@ -394,31 +395,50 @@
                 (electric-spacing-insert "." 'before))
                (t
                 (insert "."))))
-        ;; ((or (looking-back "[0-9]")
-        ;;      (and (derived-mode-p 'ess-mode)
-        ;;           (looking-back "[a-z]")))
-        ;;  (insert "."))
         (t
          (electric-spacing-insert "." 'after)
          (insert " "))))
 
-(defun electric-spacing-\, ()
+(defun electric-spacing-{ ()
   "See `electric-spacing-insert'."
-  (electric-spacing-insert "," 'after))
-
-(defun electric-spacing-: ()
-  "See `electric-spacing-insert'."
-  (cond ((derived-mode-p 'ess-mode)
-         (insert ":"))
+  (cond ((and (derived-mode-p 'ess-mode)
+              (or (looking-back "[^A-Za-z]\\(repeat\\|else\\) *")
+                  (looking-back ") *")))
+         ;; ,----[ cases ]
+         ;; | for (i in 1:10) { ...
+         ;; | function(x) { ...
+         ;; | repeat { ...
+         ;; | else { ...
+         ;; `----
+         (electric-spacing-insert "{" 'before))
         (t
-         (electric-spacing-insert ":" 'after))))
+         (insert "{"))))
 
-(defun electric-spacing-? ()
+(defun electric-spacing-\( ()
   "See `electric-spacing-insert'."
-  (cond ((derived-mode-p 'ess-mode)
-         (electric-spacing-insert "?"))
+  (cond ((and (derived-mode-p 'ess-mode)
+              (looking-back "[^A-Za-z]\\(for\\|if\\|while\\) *"))
+         (electric-spacing-insert "(" 'before))
         (t
-         (electric-spacing-insert "?" 'after))))
+         (insert "("))))
+
+;; (defun electric-spacing-\, ()
+;;   "See `electric-spacing-insert'."
+;;   (electric-spacing-insert "," 'after))
+;;
+;; (defun electric-spacing-: ()
+;;   "See `electric-spacing-insert'."
+;;   (cond ((derived-mode-p 'ess-mode)
+;;          (insert ":"))
+;;         (t
+;;          (electric-spacing-insert ":" 'after))))
+;;
+;; (defun electric-spacing-? ()
+;;   "See `electric-spacing-insert'."
+;;   (cond ((derived-mode-p 'ess-mode)
+;;          (electric-spacing-insert "?"))
+;;         (t
+;;          (electric-spacing-insert "?" 'after))))
 
 ;;----------------------------------------------------------------------
 
