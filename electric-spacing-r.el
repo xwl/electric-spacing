@@ -268,17 +268,15 @@
          ;; | a %in% b
          ;; | sprintf("%d %d\n", a, b)
          ;; `----
-         (if (or (looking-back "%[*/>]? *")
-                 (looking-back "%\\(o\\|in\\) *")
-                 (and (looking-back "\".*")
-                      (not (looking-back "\",.*"))))
+         (if (or (looking-back "[%][*/>]? *")
+                 (looking-back "[%][a-zA-Z0-9_]+ *"))
              (electric-spacing-insert "%" 'after)
-           (electric-spacing-insert "%" 'before)))
+           (electric-spacing-insert "%")))
         ;; If this is a comment or string, we most likely
         ;; want no spaces - probably string formatting
         ((and (derived-mode-p 'ess-mode)
               (electric-spacing-document?))
-         (electric-spacing-insert "%" 'after))
+         (electric-spacing-insert "%"))
         (t
          (electric-spacing-insert "%" 'after))))
 
