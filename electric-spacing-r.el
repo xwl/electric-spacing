@@ -312,12 +312,12 @@
          ;; `----
          (cond ((looking-back "[([] *")
                 (insert "!"))
-               ((looking-back "[{-,=|&*+] *")
+               ((looking-back "[{,=|&*+-] *")
                 (electric-spacing-insert "!" 'before))
                (t
-                (electric-spacing-insert "!" 'before))))
+                (insert "!"))))
         (t
-         (electric-spacing-insert "!" 'after))))
+         (insert "!"))))
 
 ;;-------------------------------------------
 ;; Other operators.
