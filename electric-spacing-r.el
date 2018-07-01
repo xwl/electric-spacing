@@ -322,6 +322,14 @@
 ;;-------------------------------------------
 ;; Other operators.
 
+;; BUG: the %op% operator has something special that I didn't
+;; understand. The rules does't apply to the openning % of the pair. I
+;; think that this can be related to font face. Only the closing % of
+;; the pair is affected by the rules below programmed. Meanwhile, to
+;; solve the problem, the package key-combo is used to set the rules for
+;; the opening %. See the file
+;; https://github.com/walmes/emacs/blob/master/init.el to details.
+
 (defun electric-spacing-% ()
   "See `electric-spacing-insert'."
   (cond ((derived-mode-p 'ess-mode)
@@ -336,8 +344,6 @@
          ;; `----
          (cond ((looking-back "[%][*/<>a-zA-Z0-9_.]* *")
                 (electric-spacing-insert "%" 'after))
-               ((looking-back "[a-zA-Z0-9_] *")
-                (electric-spacing-insert "%" 'before))
                (t
                 (insert "%"))))
         (t
