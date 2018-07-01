@@ -334,7 +334,7 @@
          ;; | a %in% b
          ;; | sprintf("%d %d\n", a, b)
          ;; `----
-         (cond ((looking-back "[%][*/>a-zA-Z0-9_]* *")
+         (cond ((looking-back "[%][*/<>a-zA-Z0-9_.]* *")
                 (electric-spacing-insert "%" 'after))
                ((looking-back "[a-zA-Z0-9_] *")
                 (electric-spacing-insert "%" 'before))
