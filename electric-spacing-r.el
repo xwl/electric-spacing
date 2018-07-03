@@ -69,7 +69,7 @@
     (?. . electric-spacing-.)
     (?{ . electric-spacing-{)
     (?( . electric-spacing-\()
-    ;; (?, . electric-spacing-\,)
+    (?, . electric-spacing-\,)
     ;; (?: . electric-spacing-:)
     ;; (?? . electric-spacing-?)
   ))
@@ -200,12 +200,24 @@
                 (electric-spacing-insert "*" 'both))
                (t
                 (electric-spacing-insert "*"))))
+        ((derived-mode-p 'python-mode)
+         ;; ,----[ cases ]
+         ;; | a * b
+         ;; | "string" * 10
+         ;; | a**b
+         ;; `----
+         (cond ((looking-back " \\* *")
+                (delete-char -3)
+                (insert "**"))
+               (t
+                (electric-spacing-insert "*"))))
         (t
-         (electric-spacing-insert "*"))))
+         (electric-spacing-insert "*"))
+        ))
 
 (defun electric-spacing-+ ()
   "See `electric-spacing-insert'."
-  (cond ((derived-mode-p 'ess-mode)
+  (cond ((derived-mode-p 'ess-mode 'python-mode)
          ;; ,----[ cases ]
          ;; | a + b
          ;; | y ~ a + b
@@ -280,7 +292,7 @@
 
 (defun electric-spacing-> ()
   "See `electric-spacing-insert'."
-  (cond ((and (derived-mode-p 'ess-mode)
+  (cond ((and (derived-mode-p 'ess-mode 'python-mode)
               (looking-at " *="))
          (electric-spacing-insert ">" 'before))
         (t
@@ -288,7 +300,7 @@
 
 (defun electric-spacing-< ()
   "See `electric-spacing-insert'."
-  (cond ((and (derived-mode-p 'ess-mode)
+  (cond ((and (derived-mode-p 'ess-mode 'python-mode)
               (looking-at " *="))
          (electric-spacing-insert "<" 'before))
         (t
@@ -346,6 +358,15 @@
                 (electric-spacing-insert "%" 'after))
                (t
                 (insert "%"))))
+        ((derived-mode-p 'python-mode)
+         ;; ,----[ cases ]
+         ;; | a % b
+         ;; | "%0.2f" % 3.1415
+         ;; `----
+         (cond ((looking-back "% *")
+                (electric-spacing-insert "%" 'after))
+               (t
+                (electric-spacing-insert "%"))))
         (t
          (insert "%"))))
 
@@ -397,7 +418,25 @@
          (cond ((or (looking-back "[0-9({[.] *")
                     (looking-back "[A-Za-z]"))
                 (insert "."))
-               ((looking-back "[,*+-=~] *")
+               ((looking-back "[,*+=~-] *")
+                (electric-spacing-insert "." 'before))
+               (t
+                (insert "."))))
+        ((derived-mode-p 'python-mode)
+         ;; ,----[ cases ]
+         ;; | pd.read_csv()
+         ;; | 3.14
+         ;; | 2 + .5
+         ;; | x = .5
+         ;; | (.9, .5)
+         ;; | [.9, .5]
+         ;; | .Machine.double.xmin
+         ;; | fun = .hidden()
+         ;; `----
+         (cond ((or (looking-back "[0-9([.] *")
+                    (looking-back "[A-Za-z]"))
+                (insert "."))
+               ((looking-back "[,*+=-] *")
                 (electric-spacing-insert "." 'before))
                (t
                 (insert "."))))
@@ -428,10 +467,18 @@
         (t
          (insert "("))))
 
-;; (defun electric-spacing-\, ()
-;;   "See `electric-spacing-insert'."
-;;   (electric-spacing-insert "," 'after))
-;;
+(defun electric-spacing-\, ()
+  "See `electric-spacing-insert'."
+  (cond ((derived-mode-p 'python-mode)
+         ;; ,----[ cases ]
+         ;; | (1, 2, 3)
+         ;; | [1, 2, 3]
+         ;; | ([1, 2, 3], [123, 234, 345])
+         ;; `----
+         (electric-spacing-insert "," 'after))
+        (t
+         (insert ","))))
+
 ;; (defun electric-spacing-: ()
 ;;   "See `electric-spacing-insert'."
 ;;   (cond ((derived-mode-p 'ess-mode)
