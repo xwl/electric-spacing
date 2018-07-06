@@ -322,9 +322,9 @@
          ;; | x + !y
          ;; | x * !y
          ;; `----
-         (cond ((looking-back "[([] *")
+         (cond ((looking-back "[{([] *")
                 (insert "!"))
-               ((looking-back "[{,=|&*+-] *")
+               ((looking-back "[[:alnum:],=|&*+-] *")
                 (electric-spacing-insert "!" 'before))
                (t
                 (insert "!"))))
