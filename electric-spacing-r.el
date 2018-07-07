@@ -191,14 +191,14 @@
          ;; | a**b = a^b
          ;; | y ~ a + . * b
          ;; `----
-         (cond ((looking-back "% *")
+         (cond ((looking-back "% *" 5)
                 (electric-spacing-insert "*" 'middle))
-               ((looking-back " \\* *")
+               ((looking-back " \\* *" 5)
                 (fixup-whitespace)
                 (delete-char -1)
                 (fixup-whitespace)
                 (insert "^"))
-               ((looking-back "[~.] *")
+               ((looking-back "[~.] *" 5)
                 (electric-spacing-insert "*" 'both))
                (t
                 (electric-spacing-insert "*"))))
@@ -208,7 +208,7 @@
          ;; | "string" * 10
          ;; | a**b
          ;; `----
-         (cond ((looking-back " \\* *")
+         (cond ((looking-back " \\* *" 5)
                 (delete-char -3)
                 (insert "**"))
                (t
@@ -227,13 +227,13 @@
          ;; | 10e+5
          ;; | 10E+5
          ;; `----
-         (cond ((looking-back "[~.] *")
+         (cond ((looking-back "[~.] *" 5)
                 (electric-spacing-insert "+" 'both))
-               ((looking-back "[([{/^] *")
+               ((looking-back "[([{/^] *" 5)
                 (insert "+"))
-               ((looking-back "[0-9.]+[eE]")
+               ((looking-back "[0-9.]+[eE]" 5)
                 (insert "+"))
-               ((looking-back "^\\s-*")
+               ((looking-back "^\\s-*" 5)
                 (insert "+"))
                (t
                 (electric-spacing-insert "+")))
@@ -267,24 +267,24 @@
          ;; |    -5
          ;; |    -.5
          ;; `----
-         (cond ((or (looking-back "[=~,*+<>&|.] *")
-                    (looking-back "<- *"))
+         (cond ((or (looking-back "[=~,*+<>&|.] *" 5)
+                    (looking-back "<- *" 5))
                 (electric-spacing-insert "-" 'before))
-               ((looking-back "[([{/^] *")
+               ((looking-back "[([{/^] *" 5)
                 (insert "-"))
-               ((looking-back "[0-9.]+[eE]")
+               ((looking-back "[0-9.]+[eE]" 5)
                 (insert "-"))
-               ((looking-back "^\\s-*")
+               ((looking-back "^\\s-*" 5)
                 (insert "-"))
                (t
                 (electric-spacing-insert "-"))))
         ;; exponent notation, e.g. 1e-10: don't space
-        ((looking-back "[0-9.]+[eE]")
+        ((looking-back "[0-9.]+[eE]" 5)
          (insert "-"))
         ;; a = -9
         ((and
-          (looking-back (concat electric-spacing-operators-regexp " *"))
-          (not (looking-back "- *")))
+          (looking-back (concat electric-spacing-operators-regexp " *") 5)
+          (not (looking-back "- *" 5)))
          (electric-spacing-insert "-" 'before))
         (t
          (electric-spacing-insert "-"))))
@@ -324,9 +324,9 @@
          ;; | x + !y
          ;; | x * !y
          ;; `----
-         (cond ((looking-back "[{([] *")
+         (cond ((looking-back "[{([] *" 5)
                 (insert "!"))
-               ((looking-back "[[:alnum:],=|&*+-] *")
+               ((looking-back "[[:alnum:],=|&*+-] *" 5)
                 (electric-spacing-insert "!" 'before))
                (t
                 (insert "!"))))
@@ -356,7 +356,7 @@
          ;; | a %in% b
          ;; | sprintf("%d %d\n", a, b)
          ;; `----
-         (cond ((looking-back "[%][[:alnum:]<>=_*+/.-]* *")
+         (cond ((looking-back "[%][[:alnum:]<>=_*+/.-]* *" 5)
                 (electric-spacing-insert "%" 'after))
                (t
                 (insert "%"))))
@@ -365,7 +365,7 @@
          ;; | a % b
          ;; | "%0.2f" % 3.1415
          ;; `----
-         (cond ((looking-back "% *")
+         (cond ((looking-back "% *" 5)
                 (electric-spacing-insert "%" 'after))
                (t
                 (electric-spacing-insert "%"))))
@@ -383,11 +383,11 @@
          ;; | c(~a + b, ~x + y)
          ;; | update(model, . ~ .)
          ;; `----
-         (cond ((looking-back "\\(<-\\|[=,.]\\) *")
+         (cond ((looking-back "\\(<-\\|[=,.]\\) *" 5)
                 (electric-spacing-insert "~" 'before))
-               ((looking-back "( *")
+               ((looking-back "( *" 5)
                 (insert "~"))
-               ((looking-back "^\\s-*")
+               ((looking-back "^\\s-*" 5)
                 (insert "~"))
                (t
                 (electric-spacing-insert "~"))))
@@ -417,10 +417,10 @@
          ;; | .Machine$double.xmin
          ;; | fun <- .Call(...)
          ;; `----
-         (cond ((or (looking-back "[0-9({[.] *")
-                    (looking-back "[A-Za-z]"))
+         (cond ((or (looking-back "[0-9({[.] *" 5)
+                    (looking-back "[A-Za-z]" 5))
                 (insert "."))
-               ((looking-back "[,*+=~-] *")
+               ((looking-back "[,*+=~-] *" 5)
                 (electric-spacing-insert "." 'before))
                (t
                 (insert "."))))
@@ -435,10 +435,10 @@
          ;; | .Machine.double.xmin
          ;; | fun = .hidden()
          ;; `----
-         (cond ((or (looking-back "[0-9([.] *")
-                    (looking-back "[A-Za-z]"))
+         (cond ((or (looking-back "[0-9([.] *" 5)
+                    (looking-back "[A-Za-z]" 5))
                 (insert "."))
-               ((looking-back "[,*+=-] *")
+               ((looking-back "[,*+=-] *" 5)
                 (electric-spacing-insert "." 'before))
                (t
                 (insert "."))))
@@ -449,8 +449,8 @@
 (defun electric-spacing-{ ()
   "See `electric-spacing-insert'."
   (cond ((and (derived-mode-p 'ess-mode)
-              (or (looking-back "[^A-Za-z]\\(repeat\\|else\\) *")
-                  (looking-back ") *")))
+              (or (looking-back "[^A-Za-z]\\(repeat\\|else\\) *" 5)
+                  (looking-back ") *" 5)))
          ;; ,----[ cases ]
          ;; | for (i in 1:10) { ...
          ;; | function(x) { ...
@@ -464,7 +464,7 @@
 (defun electric-spacing-\( ()
   "See `electric-spacing-insert'."
   (cond ((and (derived-mode-p 'ess-mode)
-              (looking-back "[^A-Za-z]\\(for\\|if\\|while\\) *"))
+              (looking-back "[^A-Za-z]\\(for\\|if\\|while\\) *" 5))
          (electric-spacing-insert "(" 'before))
         (t
          (insert "("))))
