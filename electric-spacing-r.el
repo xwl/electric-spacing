@@ -193,8 +193,10 @@
          ;; `----
          (cond ((looking-back "% *")
                 (electric-spacing-insert "*" 'middle))
-               ((looking-back " \\* ")
-                (delete-char -3)
+               ((looking-back " \\* *")
+                (fixup-whitespace)
+                (delete-char -1)
+                (fixup-whitespace)
                 (insert "^"))
                ((looking-back "[~.] *")
                 (electric-spacing-insert "*" 'both))
