@@ -449,7 +449,7 @@
 (defun electric-spacing-{ ()
   "See `electric-spacing-insert'."
   (cond ((and (derived-mode-p 'ess-mode)
-              (or (looking-back "[^A-Za-z]\\(repeat\\|else\\) *" 5)
+              (or (looking-back "[^[:alnum:]_.]\\(repeat\\|else\\) *" 5)
                   (looking-back ") *" 5)))
          ;; ,----[ cases ]
          ;; | for (i in 1:10) { ...
@@ -464,7 +464,12 @@
 (defun electric-spacing-\( ()
   "See `electric-spacing-insert'."
   (cond ((and (derived-mode-p 'ess-mode)
-              (looking-back "[^A-Za-z]\\(for\\|if\\|while\\) *" 5))
+              (looking-back "[^[:alnum:]_.]\\(for\\|if\\|while\\) *" 5))
+         ;; ,----[ cases ]
+         ;; | for (i in 1:10) { ...
+         ;; | if (x == 2) { ...
+         ;; | while (x < 10) { ...
+         ;; `----
          (electric-spacing-insert "(" 'before))
         (t
          (insert "("))))
