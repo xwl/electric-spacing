@@ -67,6 +67,7 @@
     (?% . electric-spacing-%)
     (?~ . electric-spacing-~)
     (?. . electric-spacing-.)
+    (?/ . electric-spacing-/)
     (?{ . electric-spacing-{)
     (?( . electric-spacing-\()
     (?, . electric-spacing-\,)
@@ -445,6 +446,22 @@
         (t
          (electric-spacing-insert "." 'after)
          (insert " "))))
+
+(defun electric-spacing-/ ()
+  "See `electric-spacing-insert'."
+  (cond ((derived-mode-p 'ess-mode)
+         ;; ,----[ cases ]
+         ;; | 5/3
+         ;; | 5 %/% 3
+         ;; `----
+         (cond ((looking-back "/ *" 5)
+                (fixup-whitespace)
+                (delete-char -1)
+                (insert " %/% "))
+               (t
+                (insert "/"))))
+        (t
+         (insert "/"))))
 
 (defun electric-spacing-{ ()
   "See `electric-spacing-insert'."
