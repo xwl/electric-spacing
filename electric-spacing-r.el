@@ -198,7 +198,7 @@
                 (fixup-whitespace)
                 (delete-char -1)
                 (fixup-whitespace)
-                (insert "^"))
+                (insert " %*% "))
                ((looking-back "[~.] *" 5)
                 (electric-spacing-insert "*" 'both))
                (t
@@ -295,17 +295,61 @@
 
 (defun electric-spacing-> ()
   "See `electric-spacing-insert'."
-  (cond ((and (derived-mode-p 'ess-mode 'python-mode)
-              (looking-at " *="))
-         (electric-spacing-insert ">" 'before))
+  (cond ((derived-mode-p 'ess-mode)
+         ;; ,----[ cases ]
+         ;; | 5 < 7
+         ;; | 5 <= 7
+         ;; | iris %>%
+         ;; |     filter(...)
+         ;; `----
+         (cond ((looking-at " *=")
+                (electric-spacing-insert ">" 'before))
+               ((looking-back " > *" 5)
+                (fixup-whitespace)
+                (delete-char -1)
+                (fixup-whitespace)
+                (insert " %>%\n")
+                (ess-indent-or-complete))
+               (t
+                (electric-spacing-insert ">"))))
+        ((derived-mode-p 'python-mode)
+         ;; ,----[ cases ]
+         ;; | 5 < 7
+         ;; | 5 <= 7
+         ;; `----
+         (cond ((looking-at " *=")
+                (electric-spacing-insert ">" 'before))
+               (t
+                (electric-spacing-insert ">"))))
         (t
          (electric-spacing-insert ">"))))
 
 (defun electric-spacing-< ()
   "See `electric-spacing-insert'."
-  (cond ((and (derived-mode-p 'ess-mode 'python-mode)
-              (looking-at " *="))
-         (electric-spacing-insert "<" 'before))
+  (cond ((derived-mode-p 'ess-mode)
+         ;; ,----[ cases ]
+         ;; | 5 > 7
+         ;; | 5 >= 7
+         ;; | x <<- 10
+         ;; `----
+         (cond ((looking-at " *=")
+                (electric-spacing-insert "<" 'before))
+               ((looking-back " < *" 5)
+                (fixup-whitespace)
+                (delete-char -1)
+                (fixup-whitespace)
+                (insert " <<- "))
+               (t
+                (electric-spacing-insert "<"))))
+        ((derived-mode-p 'python-mode)
+         ;; ,----[ cases ]
+         ;; | 5 < 7
+         ;; | 5 <= 7
+         ;; `----
+         (cond ((looking-at " *=")
+                (electric-spacing-insert "<" 'before))
+               (t
+                (electric-spacing-insert "<"))))
         (t
          (electric-spacing-insert "<"))))
 
@@ -357,10 +401,14 @@
          ;; | a %in% b
          ;; | sprintf("%d %d\n", a, b)
          ;; `----
-         (cond ((looking-back "[%][[:alnum:]<>=_*+/.-]* *" 5)
+         (cond ((looking-back "[%][[:alnum:]$!?<>=_*+/.-]+ *" 5)
                 (electric-spacing-insert "%" 'after))
+               ((looking-back "% *" 5)
+                (fixup-whitespace)
+                (delete-char -1)
+                (electric-spacing-insert "%%" 'both))
                (t
-                (insert "%"))))
+                (electric-spacing-insert "%"))))
         ((derived-mode-p 'python-mode)
          ;; ,----[ cases ]
          ;; | a % b
