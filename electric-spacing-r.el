@@ -505,9 +505,9 @@
          (cond ((looking-back "/ *" 1)
                 (fixup-whitespace)
                 (delete-char -1)
-                (insert " %/% "))
+                (electric-spacing-insert "%/%" 'both))
                (t
-                (insert "/"))))
+                (electric-spacing-insert "/" 'middle))))
         (t
          (insert "/"))))
 
