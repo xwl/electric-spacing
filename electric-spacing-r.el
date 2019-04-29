@@ -385,9 +385,12 @@
 ;; understand. The rules does't apply to the openning % of the pair. I
 ;; think that this can be related to font face. Only the closing % of
 ;; the pair is affected by the rules below programmed. Meanwhile, to
-;; solve the problem, the package key-combo is used to set the rules for
-;; the opening %. See the file
+;; solve the problem, the package key-combo can be used to set the rules
+;; for the opening %. See the file
 ;; https://github.com/walmes/emacs/blob/master/init.el to details.
+
+;; SOLVED: the above related problem was solved using the
+;; `save-excursion' block.
 
 (defun electric-spacing-% ()
   "See `electric-spacing-insert'."
@@ -402,6 +405,9 @@
          ;; | sprintf("%d %d\n", a, b)
          ;; `----
          (cond ((looking-back "[%][[:alnum:]$!?<>=_*+/.-]+ *" 1)
+                (save-excursion
+                  (search-backward "%")
+                  (fixup-whitespace))
                 (electric-spacing-insert "%" 'after))
                ((looking-back "% *" 1)
                 (fixup-whitespace)
