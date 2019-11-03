@@ -15,7 +15,9 @@ results in
 Setup
 ------
 
-The simplest way to install electric-spacing-mode is via package.el.
+The simplest way to install electric-spacing-mode is via package.el. After that, add below line into your.emacs:
+
+    (require 'electric-spacing-init)
 
 To temporarily enable electric-spacing-mode simply call
 `electric-spacing-mode`. To permenantly enable it for a major mode simply
