@@ -24,6 +24,13 @@
 
 (require 'electric-spacing)
 
+(defun electric-spacing-cc-mode-hook ()
+  "Unset c-electric-* keymaps."
+  (dolist (op electric-spacing-operators)
+    (local-unset-key (char-to-string op))))
+
+(add-hook 'c-mode-common-hook 'electric-spacing-cc-mode-hook)
+
 (defun electric-spacing-:-cc-mode ()
   (cond ((looking-back ": *")
          (search-backward ":" (line-beginning-position) t 1)

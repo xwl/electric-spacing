@@ -256,9 +256,7 @@ so let's not get too insert-happy."
          (electric-spacing-insert "." 'after)
          (insert " "))
         ((or (looking-back "[0-9]")
-             (or (and c-buffer-is-cc-mode
-                      (looking-back "[a-z]"))
-                 (and
+             (or (and
                   (derived-mode-p 'python-mode 'ruby-mode)
                   (looking-back "[a-z\)]"))
                  (and
@@ -331,7 +329,6 @@ so let's not get too insert-happy."
          (insert "/"))
         (t
          (electric-spacing-insert "/"))))
-
 
 (defun electric-spacing-enclosing-paren ()
   "Return the opening parenthesis of the enclosing parens, or nil if not inside any parens."
