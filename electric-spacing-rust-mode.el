@@ -27,7 +27,7 @@
 (defun electric-spacing-:-rust-mode ()
   (if (looking-back ": *")
       (progn
-        (search-backward " :" nil t 1)
+        (search-backward " :" (line-beginning-position) t 1)
         (replace-match "::"))
     (electric-spacing-insert ":" 'after)))
 

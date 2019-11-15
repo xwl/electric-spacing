@@ -113,6 +113,7 @@ is very handy for many programming languages."
   :lighter " _+_"
 
   ;; body
+  (require 'electric-spacing-init)
   (if electric-spacing-mode
       (add-hook 'post-self-insert-hook
                 #'electric-spacing-post-self-insert-function nil t)

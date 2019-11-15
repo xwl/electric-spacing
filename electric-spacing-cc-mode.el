@@ -25,9 +25,15 @@
 (require 'electric-spacing)
 
 (defun electric-spacing-:-cc-mode ()
-  (if (looking-back ": *")
-      (electric-spacing-insert ":" 'middle)
-    (electric-spacing-insert ":")))
+  (cond ((looking-back ": *")
+         (search-backward ":" (line-beginning-position) t 1)
+         (replace-match "::"))
+        ((save-excursion
+           (re-search-backward "struct\\|class" (line-beginning-position) t 1))
+         (electric-spacing-insert ":"))
+        (t
+         (electric-spacing-insert ":" 'after)))
+  (indent-according-to-mode))
 
 (defun electric-spacing-*-cc-mode ()
   "See `electric-spacing-insert'."
@@ -81,11 +87,19 @@
 
 (defun electric-spacing->-cc-mode ()
   "See `electric-spacing-insert'."
-  (if (looking-back " - ")
-      (progn
-        (delete-char -3)
-        (insert "->")))
-  (electric-spacing-insert ">"))
+  (cond ((looking-back " - ")
+         (delete-char -3)
+         (insert "->"))
+        ((save-excursion
+           (search-backward "#include < " (line-beginning-position) t 1))
+         (save-excursion (replace-match "#include <"))
+         (insert ">"))
+        ((save-excursion
+           (search-backward " < " (line-beginning-position) t 1))
+         (save-excursion (replace-match "<"))
+         (insert ">"))
+        (t
+         (electric-spacing-insert ">"))))
 
 (defun electric-spacing-+-cc-mode ()
   "See `electric-spacing-insert'."
@@ -102,12 +116,9 @@
 (defun electric-spacing---cc-mode ()
   "See `electric-spacing-insert'."
   (cond ((looking-back "\\- *")
-         (when (looking-back "[a-zA-Z0-9_] +\\- *")
-           (save-excursion
-             (backward-char 2)
-             (delete-horizontal-space)))
-         (electric-spacing-insert "-" 'middle)
-         (indent-according-to-mode))
+         (electric-spacing-insert "-" 'middle))
+        ((looking-back (concat electric-spacing-operators-regexp " *"))
+         (insert "-"))
         (t
          (electric-spacing-insert "-"))))
 
@@ -126,25 +137,11 @@
       (insert "%")
     (electric-spacing-insert "%")))
 
-(defun electric-spacing-<-cc-mode ()
-  "See `electric-spacing-insert'."
-  (cond
-   ((looking-back
-     (concat "\\(" (regexp-opt
-                    '("#include" "vector" "deque" "list" "map" "stack"
-                      "multimap" "set" "hash_map" "iterator" "template"
-                      "pair" "auto_ptr" "static_cast"
-                      "dynmaic_cast" "const_cast" "reintepret_cast"
+(defun electric-spacing-\(-cc-mode ()
+  (electric-spacing-insert "(" 'middle))
 
-                      "#import"))
-             "\\)\\ *")
-     (line-beginning-position))
-    (if (looking-back "^#\\(include\\|import\\) *")
-        (electric-spacing-insert " " 'middle))
-    (insert "<>")
-    (backward-char))
-   (t
-    (electric-spacing-insert "<"))))
+(defun electric-spacing-. ()
+  (electric-spacing-insert "." 'middle))
 
 (provide 'electric-spacing-cc-mode)
 ;;; electric-spacing-cc-mode.el ends here
