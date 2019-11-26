@@ -24,26 +24,26 @@
 
 (require 'electric-spacing)
 
-(defun electric-spacing-:-rust-mode ()
+(defun electric-spacing-rust-mode-: ()
   (if (looking-back ": *")
       (progn
         (search-backward " :" (line-beginning-position) t 1)
         (replace-match "::"))
     (electric-spacing-insert ":" 'after)))
 
-(defalias 'electric-spacing-:-rustic-mode 'electric-spacing-:-rust-mode)
+(defalias 'electric-spacing-rust-mode-:-rustic-mode 'electric-spacing-:)
 
-(defun electric-spacing-.-rust-mode ()
+(defun electric-spacing-rust-mode-. ()
   (electric-spacing-insert "." 'middle))
 
-(defalias 'electric-spacing-.-rustic-mode 'electric-spacing-.-rust-mode)
+(defalias 'electric-spacing-rust-mode-.-rustic-mode 'electric-spacing-.)
 
-(defun electric-spacing-&-rust-mode ()
+(defun electric-spacing-rust-mode-& ()
   (if (looking-back "( *")
       (electric-spacing-insert "&" 'middle)
     (electric-spacing-insert "&" 'before)))
 
-(defalias 'electric-spacing-&-rustic-mode 'electric-spacing-&-rust-mode)
+(defalias 'electric-spacing-rust-mode-&-rustic-mode 'electric-spacing-&)
 
 (provide 'electric-spacing-rust-mode)
 ;;; electric-spacing-rust-mode.el ends here

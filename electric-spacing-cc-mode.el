@@ -1,4 +1,4 @@
-;;; electric-spacing-rust.el --- c-buffer-is-cc-mode tunings
+;;; electric-spacing-cc-mode-rust.el --- c-buffer-is tunings
 
 ;; Copyright (C) 2019 Free Software Foundation, Inc.
 
@@ -36,7 +36,7 @@
 
 (add-hook 'c-mode-common-hook 'electric-spacing-cc-mode-hook)
 
-(defun electric-spacing-:-cc-mode ()
+(defun electric-spacing-cc-mode-: ()
   (cond ((looking-back ": *")
          (search-backward ":" (line-beginning-position) t 1)
          (replace-match "::"))
@@ -47,7 +47,7 @@
          (electric-spacing-insert ":" 'after)))
   (indent-according-to-mode))
 
-(defun electric-spacing-*-cc-mode ()
+(defun electric-spacing-cc-mode-* ()
   "See `electric-spacing-insert'."
   ;; ,----
   ;; | a * b;
@@ -75,7 +75,7 @@
         (t
          (electric-spacing-insert "*"))))
 
-(defun electric-spacing-&-cc-mode ()
+(defun electric-spacing-cc-mode-& ()
   "See `electric-spacing-insert'."
   ;; ,----[ cases ]
   ;; | char &a = b; // FIXME
@@ -97,7 +97,7 @@
         (t
          (electric-spacing-insert "&" 'middle))))
 
-(defun electric-spacing->-cc-mode ()
+(defun electric-spacing-cc-mode-> ()
   "See `electric-spacing-insert'."
   (cond ((looking-back " - ")
          (delete-char -3)
@@ -112,7 +112,7 @@
         (t
          (electric-spacing-insert ">"))))
 
-(defun electric-spacing-+-cc-mode ()
+(defun electric-spacing-cc-mode-+ ()
   "See `electric-spacing-insert'."
   (cond ((looking-back "\\+ *")
          (when (looking-back "[a-zA-Z0-9_] +\\+ *")
@@ -124,7 +124,7 @@
         (t
          (electric-spacing-insert "+"))))
 
-(defun electric-spacing---cc-mode ()
+(defun electric-spacing-cc-mode-- ()
   "See `electric-spacing-insert'."
   (cond ((looking-back "\\- *")
          (electric-spacing-insert "-" 'middle))
@@ -133,11 +133,11 @@
         (t
          (electric-spacing-insert "-"))))
 
-(defun electric-spacing-?-cc-mode ()
+(defun electric-spacing-cc-mode-? ()
   "See `electric-spacing-insert'."
   (electric-spacing-insert "?"))
 
-(defun electric-spacing-%-cc-mode ()
+(defun electric-spacing-cc-mode-% ()
   "See `electric-spacing-insert'."
   ;; ,----
   ;; | a % b;
@@ -148,13 +148,13 @@
       (insert "%")
     (electric-spacing-insert "%")))
 
-(defun electric-spacing-\(-cc-mode ()
+(defun electric-spacing-cc-mode-\( ()
   (electric-spacing-insert "(" 'middle))
 
-(defun electric-spacing-.-cc-mode ()
+(defun electric-spacing-cc-mode-. ()
   (electric-spacing-insert "." 'middle))
 
-(defun electric-spacing-/-cc-mode ()
+(defun electric-spacing-cc-mode-/ ()
   (if (electric-spacing-cc-mode-include-line)
       (insert "/")
     (electric-spacing-insert "/")))

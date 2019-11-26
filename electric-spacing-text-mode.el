@@ -24,7 +24,7 @@
 
 (require 'electric-spacing)
 
-(defun electric-spacing-:-text-mode ()
+(defun electric-spacing-text-mode-: ()
   (electric-spacing-insert ":" 'after))
 
 (provide 'electric-spacing-text-mode)

@@ -194,9 +194,9 @@ so let's not get too insert-happy."
            electric-spacing-rules)))
 
 (defun electric-spacing-get-fun-throw (char mode tag)
-  (setq fn (intern (format "electric-spacing-%c%s"
-                           char
-                           (if mode (format "-%s" mode) ""))))
+  (setq fn (intern (format "electric-spacing%s-%c"
+                           (if mode (format "-%s" mode) "")
+                           char)))
   (when (fboundp fn)
     (throw tag fn)))
 

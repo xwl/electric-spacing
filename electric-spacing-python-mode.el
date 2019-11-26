@@ -24,13 +24,13 @@
 
 (require 'electric-spacing)
 
-(defun electric-spacing-:-python-mode ()
+(defun electric-spacing-python-mode-: ()
   (if (and (not (in-string-p))
            (eq (electric-spacing-enclosing-paren) ?\{))
       (electric-spacing-insert ":" 'after)
     (insert ":")))
 
-(defun electric-spacing-*-python-mode ()
+(defun electric-spacing-python-mode-* ()
   "See `electric-spacing-insert'."
   ;; Handle python *args and **kwargs
   ;; Can only occur after '(' ',' or on a new line, so just check
@@ -44,7 +44,7 @@
         (t
          (electric-spacing-insert "*"))))
 
-(defun electric-spacing-%-python-mode ()
+(defun electric-spacing-python-mode-% ()
   "See `electric-spacing-insert'."
   (cond
    ;; If this is a comment or string, we most likely
