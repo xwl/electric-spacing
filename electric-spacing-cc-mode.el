@@ -24,6 +24,11 @@
 
 (require 'electric-spacing)
 
+(defun electric-spacing-cc-mode-include-line ()
+  "Return t if we are on the line of including header files."
+  (save-excursion
+    (search-backward "#include < " (line-beginning-position) t 1)))
+
 (defun electric-spacing-cc-mode-hook ()
   "Unset c-electric-* keymaps."
   (dolist (op electric-spacing-operators)
@@ -90,19 +95,18 @@
         ((looking-back ", *")
          (electric-spacing-insert "&" 'before))
         (t
-         (electric-spacing-insert "&"))))
+         (electric-spacing-insert "&" 'middle))))
 
 (defun electric-spacing->-cc-mode ()
   "See `electric-spacing-insert'."
   (cond ((looking-back " - ")
          (delete-char -3)
          (insert "->"))
-        ((save-excursion
-           (search-backward "#include < " (line-beginning-position) t 1))
+        ((electric-spacing-cc-mode-include-line)
          (save-excursion (replace-match "#include <"))
          (insert ">"))
         ((save-excursion
-           (search-backward " < " (line-beginning-position) t 1))
+           (re-search-backward " < ?" (line-beginning-position) t 1))
          (save-excursion (replace-match "<"))
          (insert ">"))
         (t
@@ -147,8 +151,13 @@
 (defun electric-spacing-\(-cc-mode ()
   (electric-spacing-insert "(" 'middle))
 
-(defun electric-spacing-. ()
+(defun electric-spacing-.-cc-mode ()
   (electric-spacing-insert "." 'middle))
+
+(defun electric-spacing-/-cc-mode ()
+  (if (electric-spacing-cc-mode-include-line)
+      (insert "/")
+    (electric-spacing-insert "/")))
 
 (provide 'electric-spacing-cc-mode)
 ;;; electric-spacing-cc-mode.el ends here
