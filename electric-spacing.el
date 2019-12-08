@@ -42,7 +42,7 @@
 
 ;;; electric-spacing minor mode
 
-(defcustom electric-spacing-double-space-docs t
+(defcustom electric-spacing-double-space-docs nil
   "Enable double spacing of . in document lines - e,g, type '.' => get '.  '."
   :type 'boolean
   :group 'electricity)
@@ -269,8 +269,7 @@ so let's not get too insert-happy."
              (insert ".")
            (insert " . ")))
         (t
-         (electric-spacing-insert "." 'after)
-         (insert " "))))
+         (electric-spacing-insert "." 'after))))
 
 (defun electric-spacing-+ ()
   "See `electric-spacing-insert'."
