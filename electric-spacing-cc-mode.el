@@ -27,7 +27,7 @@
 (defun electric-spacing-cc-mode-include-line ()
   "Return t if we are on the line of including header files."
   (save-excursion
-    (search-backward "#include < " (line-beginning-position) t 1)))
+    (re-search-backward "#include < ?" (line-beginning-position) t 1)))
 
 (defun electric-spacing-cc-mode-hook ()
   "Unset c-electric-* keymaps."
@@ -96,6 +96,13 @@
          (electric-spacing-insert "&" 'before))
         (t
          (electric-spacing-insert "&" 'middle))))
+
+(defun electric-spacing-cc-mode-< ()
+  "See `electric-spacing-insert'."
+  (cond ((looking-back "operator<?")
+         (insert "<"))
+        (t
+         (electric-spacing-insert "<"))))
 
 (defun electric-spacing-cc-mode-> ()
   "See `electric-spacing-insert'."

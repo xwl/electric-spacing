@@ -27,5 +27,8 @@
 (defun electric-spacing-text-mode-: ()
   (electric-spacing-insert ":" 'after))
 
+(defun electric-spacing-text-mode-- ()
+  (electric-spacing-insert "-" 'middle))
+
 (provide 'electric-spacing-text-mode)
 ;;; electric-spacing-text-mode.el ends here
