@@ -3,7 +3,6 @@
 ;; Copyright (C) 2019 Free Software Foundation, Inc.
 
 ;; Author: William Xu <william.xwl@gmail.com>
-;; Version: 0.1
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
