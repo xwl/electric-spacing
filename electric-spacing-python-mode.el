@@ -24,7 +24,7 @@
 (require 'electric-spacing)
 
 (defun electric-spacing-python-mode-: ()
-  (if (and (not (in-string-p))
+  (if (and (not (nth 3 (syntax-ppss)))  ; not in string
            (eq (electric-spacing-enclosing-paren) ?\{))
       (electric-spacing-insert ":" 'after)
     (insert ":")))
@@ -35,9 +35,9 @@
   ;; Can only occur after '(' ',' or on a new line, so just check
   ;; for those. If it's just after a comma then also insert a space
   ;; before the *.
-  (cond ((looking-back ",")
+  (cond ((looking-back "," nil)
          (insert " *"))
-        ((looking-back "[(,^)][ \t]*[*]?")
+        ((looking-back "[(,^)][ \t]*[*]?" nil)
          (insert "*"))
         ;; Othewise act as normal
         (t

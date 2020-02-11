@@ -24,7 +24,7 @@
 (require 'electric-spacing)
 
 (defun electric-spacing-rust-mode-: ()
-  (if (looking-back ": *")
+  (if (looking-back ": *" nil)
       (progn
         (search-backward " :" (line-beginning-position) t 1)
         (replace-match "::"))
@@ -38,7 +38,7 @@
 (defalias 'electric-spacing-rust-mode-.-rustic-mode 'electric-spacing-.)
 
 (defun electric-spacing-rust-mode-& ()
-  (if (looking-back "( *")
+  (if (looking-back "( *" nil)
       (electric-spacing-insert "&" 'middle)
     (electric-spacing-insert "&" 'before)))
 

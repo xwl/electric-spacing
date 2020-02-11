@@ -232,9 +232,9 @@ so let's not get too insert-happy."
   (cond ((derived-mode-p 'emacs-lisp-mode)
 	 ;; Do nothing in Emacs lisp mode
 	 (insert "("))
-	((looking-back "[,;] *")
+	((looking-back "[,;] *" nil)
 	 (electric-spacing-insert "(" 'before))
-	((looking-back "[({!~] *")
+	((looking-back "[({!~] *" nil)
 	 (electric-spacing-insert "(" 'middle))
 	((or electric-spacing-parens
 	     (and electric-spacing-control-statement-parens
@@ -255,17 +255,17 @@ so let's not get too insert-happy."
               (electric-spacing-document?))
          (electric-spacing-insert "." 'after)
          (insert " "))
-        ((or (looking-back "[0-9]")
+        ((or (looking-back "[0-9]" nil)
              (or (and
                   (derived-mode-p 'python-mode 'ruby-mode)
-                  (looking-back "[a-z\)]"))
+                  (looking-back "[a-z\)]" nil))
                  (and
                   (derived-mode-p 'js-mode 'js2-mode)
-                  (looking-back "[a-z\)$]"))))
+                  (looking-back "[a-z\)$]" nil))))
          (insert "."))
         ((derived-mode-p 'cperl-mode 'perl-mode 'ruby-mode)
          ;; Check for the .. range operator
-         (if (looking-back ".")
+         (if (looking-back "." nil)
              (insert ".")
            (insert " . ")))
         (t
@@ -274,11 +274,11 @@ so let's not get too insert-happy."
 (defun electric-spacing-+ ()
   "See `electric-spacing-insert'."
   (cond ;; func(++i);
-        ((looking-back "( *")
+        ((looking-back "( *" nil)
          (electric-spacing-insert "+" 'middle))
 
         ;; j = ++i;
-        ((looking-back "= *")
+        ((looking-back "= *" nil)
          (electric-spacing-insert "+" 'before))
 
         (t
@@ -287,16 +287,16 @@ so let's not get too insert-happy."
 (defun electric-spacing-- ()
   "See `electric-spacing-insert'."
   (cond ;; exponent notation, e.g. 1e-10: don't space
-        ((looking-back "[0-9.]+[eE]")
+        ((looking-back "[0-9.]+[eE]" nil)
          (insert "-"))
 
         ;; a = -9
-        ((and (looking-back (concat electric-spacing-operators-regexp " *"))
-              (not (looking-back "- *")))
+        ((and (looking-back (concat electric-spacing-operators-regexp " *") nil)
+              (not (looking-back "- *" nil)))
           (electric-spacing-insert "-" 'before))
 
         ;; func(--i)
-        ((looking-back "( *")
+        ((looking-back "( *" nil)
          (electric-spacing-insert "-" 'middle))
 
         (t
@@ -310,7 +310,7 @@ so let's not get too insert-happy."
   "See `electric-spacing-insert'."
   ;; First class regex operator =~ langs
   (cond ((derived-mode-p 'ruby-mode 'perl-mode 'cperl-mode)
-         (if (looking-back "= ")
+         (if (looking-back "= " nil)
              (progn
                (delete-char -2)
                (insert "=~ "))

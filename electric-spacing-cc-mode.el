@@ -36,7 +36,7 @@
 (add-hook 'c-mode-common-hook 'electric-spacing-cc-mode-hook)
 
 (defun electric-spacing-cc-mode-: ()
-  (cond ((looking-back ": *")
+  (cond ((looking-back ": *" nil)
          (search-backward ":" (line-beginning-position) t 1)
          (replace-match "::"))
         ((save-excursion
@@ -58,18 +58,18 @@
   ;; | printf("%d", *ip);
   ;; | func(*p);
   ;; `----
-  (cond ((looking-back (concat (electric-spacing-c-types) " *" ))
+  (cond ((looking-back (concat (electric-spacing-c-types) " *") nil)
          (electric-spacing-insert "*" 'before))
-        ((looking-back "\\* *")
+        ((looking-back "\\* *" nil)
          (electric-spacing-insert "*" 'middle))
-        ((looking-back "^[ (]*")
+        ((looking-back "^[ (]*" nil)
          (electric-spacing-insert "*" 'middle)
          (indent-according-to-mode))
-        ((looking-back "( *")
+        ((looking-back "( *" nil)
          (electric-spacing-insert "*" 'middle))
-        ((looking-back ", *")
+        ((looking-back ", *" nil)
          (electric-spacing-insert "*" 'before))
-        ((looking-back "= *")
+        ((looking-back "= *" nil)
          (electric-spacing-insert "*" 'before))
         (t
          (electric-spacing-insert "*"))))
@@ -85,27 +85,27 @@
   ;; | scanf ("%d", &i);
   ;; | func(&i)
   ;; `----
-  (cond ((looking-back (concat (electric-spacing-c-types) " *" ))
+  (cond ((looking-back (concat (electric-spacing-c-types) " *") nil)
          (electric-spacing-insert "&" 'after))
-        ((looking-back "= *")
+        ((looking-back "= *" nil)
          (electric-spacing-insert "&" 'before))
-        ((looking-back "( *")
+        ((looking-back "( *" nil)
          (electric-spacing-insert "&" 'middle))
-        ((looking-back ", *")
+        ((looking-back ", *" nil)
          (electric-spacing-insert "&" 'before))
         (t
          (electric-spacing-insert "&" 'middle))))
 
 (defun electric-spacing-cc-mode-< ()
   "See `electric-spacing-insert'."
-  (cond ((looking-back "operator<?")
+  (cond ((looking-back "operator<?" nil)
          (insert "<"))
         (t
          (electric-spacing-insert "<"))))
 
 (defun electric-spacing-cc-mode-> ()
   "See `electric-spacing-insert'."
-  (cond ((looking-back " - ")
+  (cond ((looking-back " - " nil)
          (delete-char -3)
          (insert "->"))
         ((electric-spacing-cc-mode-include-line)
@@ -120,8 +120,8 @@
 
 (defun electric-spacing-cc-mode-+ ()
   "See `electric-spacing-insert'."
-  (cond ((looking-back "\\+ *")
-         (when (looking-back "[a-zA-Z0-9_] +\\+ *")
+  (cond ((looking-back "\\+ *" nil)
+         (when (looking-back "[a-zA-Z0-9_] +\\+ *" nil)
            (save-excursion
              (backward-char 2)
              (delete-horizontal-space)))
@@ -132,9 +132,9 @@
 
 (defun electric-spacing-cc-mode-- ()
   "See `electric-spacing-insert'."
-  (cond ((looking-back "\\- *")
+  (cond ((looking-back "\\- *" nil)
          (electric-spacing-insert "-" 'middle))
-        ((looking-back (concat electric-spacing-operators-regexp " *"))
+        ((looking-back (concat electric-spacing-operators-regexp " *") nil)
          (insert "-"))
         (t
          (electric-spacing-insert "-"))))
@@ -149,8 +149,8 @@
   ;; | a % b;
   ;; | printf("%d %d\n", a % b);
   ;; `----
-  (if (and (looking-back "\".*")
-           (not (looking-back "\",.*")))
+  (if (and (looking-back "\".*" nil)
+           (not (looking-back "\",.*" nil)))
       (insert "%")
     (electric-spacing-insert "%")))
 
