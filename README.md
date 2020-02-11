@@ -27,5 +27,14 @@ following to your config[1]:
 Note that `electric-spacing-mode` is not a global minor mode, and so must
 be enabled separately for each major mode.
 
+Major Mode Specific Tunings
+---------------------------
+
+To fine tune the spacing for specific operators in FOO-mode, you can
+just define mode specific function to override. For example, to
+redefine operator spacing for '-' in text-mode:
+
+    (defun electric-spacing-text-mode-- ()
+      (electric-spacing-insert "-" 'middle))
 
 [1] For emacs versions < 24 you may need to [define a wrapper function](http://emacs.stackexchange.com/questions/5358/proper-way-to-enable-minor-mode) to enable the mode unconditionally.
