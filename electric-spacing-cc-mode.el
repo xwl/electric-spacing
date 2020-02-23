@@ -1,4 +1,4 @@
-;;; electric-spacing-cc-mode-rust.el --- c-buffer-is tunings
+;;; electric-spacing-cc-mode.el --- c-buffer-is tunings
 
 ;; Copyright (C) 2019 Free Software Foundation, Inc.
 

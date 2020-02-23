@@ -1,4 +1,4 @@
-;;; electric-spacing-rust.el --- Text mode tunings
+;;; electric-spacing-text-mode.el--- Text mode tunings
 
 ;; Copyright (C) 2019 Free Software Foundation, Inc.
 

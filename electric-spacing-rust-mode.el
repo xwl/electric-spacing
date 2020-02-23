@@ -1,4 +1,4 @@
-;;; electric-spacing-rust.el --- Rust mode tunings
+;;; electric-spacing-rust-mode.el --- Rust mode tunings
 
 ;; Copyright (C) 2019 Free Software Foundation, Inc.
 

@@ -1,4 +1,4 @@
-;;; electric-spacing-rust.el --- python mode tunings
+;;; electric-spacing-python-mode.el --- python mode tunings
 
 ;; Copyright (C) 2019 Free Software Foundation, Inc.
 
