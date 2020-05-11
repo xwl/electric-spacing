@@ -37,7 +37,7 @@
 
 (defun electric-spacing-cc-mode-: ()
   (cond ((looking-back ": *" nil)
-         (search-backward ":" (line-beginning-position) t 1)
+         (search-backward ": *" (line-beginning-position) t 1)
          (replace-match "::"))
         ((save-excursion
            (re-search-backward "struct\\|class" (line-beginning-position) t 1))
@@ -164,6 +164,12 @@
   (if (electric-spacing-cc-mode-include-line)
       (insert "/")
     (electric-spacing-insert "/")))
+
+(defun electric-spacing-cc-mode-! ()
+  "See `electric-spacing-insert'."
+  (if (looking-back "(" nil)
+      (electric-spacing-insert "!" 'middle)
+    (electric-spacing-insert "!" 'before)))
 
 (provide 'electric-spacing-cc-mode)
 ;;; electric-spacing-cc-mode.el ends here

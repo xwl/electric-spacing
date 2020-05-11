@@ -83,10 +83,11 @@ to enable only in control statements."
     (?, . electric-spacing-\,)
     (?~ . electric-spacing-~)
     (?. . electric-spacing-.)
+    (?! . electric-spacing-!)
     (?\( . electric-spacing-left-paren)
     (?^ . electric-spacing-self-insert-command)))
 
-(defvar electric-spacing-operators '(?= ?< ?> ?% ?+ ?- ?* ?/ ?& ?| ?: ?? ?, ?~ ?. ?\( ?^ ?\;))
+(defvar electric-spacing-operators '(?= ?< ?> ?% ?+ ?- ?* ?/ ?& ?| ?: ?? ?, ?~ ?. ?\( ?^ ?\; ?!))
 
 (defun electric-spacing-post-self-insert-function ()
   (when (and (electric-spacing-should-run?)
@@ -305,6 +306,10 @@ so let's not get too insert-happy."
 (defun electric-spacing-? ()
   "See `electric-spacing-insert'."
   (electric-spacing-insert "?" 'after))
+
+(defun electric-spacing-! ()
+  "See `electric-spacing-insert'."
+  (electric-spacing-insert "!" 'middle))
 
 (defun electric-spacing-~ ()
   "See `electric-spacing-insert'."
