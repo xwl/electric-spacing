@@ -171,5 +171,14 @@
       (electric-spacing-insert "!" 'middle)
     (electric-spacing-insert "!" 'before)))
 
+(defun electric-spacing-cc-mode-\; ()
+  "See `electric-spacing-insert'."
+  (electric-spacing-insert ";" 'after)
+  (indent-according-to-mode)
+  (unless (save-excursion
+            (re-search-backward "for ?(" (line-beginning-position) t 1))
+    (newline)
+    (indent-according-to-mode)))
+
 (provide 'electric-spacing-cc-mode)
 ;;; electric-spacing-cc-mode.el ends here

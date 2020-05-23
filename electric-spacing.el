@@ -223,9 +223,7 @@ so let's not get too insert-happy."
 
 (defun electric-spacing-\; ()
   "See `electric-spacing-insert'."
-  (insert ";")
-  (indent-according-to-mode)
-  (newline)
+  (electric-spacing-insert ";" 'after)
   (indent-according-to-mode))
 
 (defun electric-spacing-left-paren ()
