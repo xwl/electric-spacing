@@ -112,8 +112,7 @@
         ((electric-spacing-cc-mode-include-line)
          (save-excursion (replace-match "#include <"))
          (insert ">"))
-        ((save-excursion
-           (re-search-backward " ?< ?" (line-beginning-position) t 1))
+        ((save-excursion (re-search-backward " < " (line-beginning-position) t 1))
          (save-excursion (replace-match "<"))
          (electric-spacing-insert ">" 'after))
         (t
