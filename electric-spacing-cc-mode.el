@@ -37,7 +37,8 @@
 
 (defun electric-spacing-cc-mode-: ()
   (cond ((looking-back ": *" nil)
-         (search-backward ": *" (line-beginning-position) t 1)
+         (or (re-search-backward " +: *" (line-beginning-position) t 1)
+             (re-search-backward ": *" (line-beginning-position) t 1))
          (replace-match "::"))
         ((save-excursion
            (re-search-backward "struct\\|class" (line-beginning-position) t 1))
@@ -112,9 +113,9 @@
          (save-excursion (replace-match "#include <"))
          (insert ">"))
         ((save-excursion
-           (re-search-backward " < ?" (line-beginning-position) t 1))
+           (re-search-backward " ?< ?" (line-beginning-position) t 1))
          (save-excursion (replace-match "<"))
-         (insert ">"))
+         (electric-spacing-insert ">" 'after))
         (t
          (electric-spacing-insert ">"))))
 
