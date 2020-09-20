@@ -36,12 +36,16 @@
 (add-hook 'c-mode-common-hook 'electric-spacing-cc-mode-hook)
 
 (defun electric-spacing-cc-mode-: ()
-  (cond ((looking-back ": *" nil)
-         (or (re-search-backward " +: *" (line-beginning-position) t 1)
-             (re-search-backward ": *" (line-beginning-position) t 1))
+  (cond ((or (looking-back " +: *") (looking-back": *" )) ; namespace
          (replace-match "::"))
         ((save-excursion
            (re-search-backward "struct\\|class" (line-beginning-position) t 1))
+         (electric-spacing-insert ":"))
+        ((save-excursion                ; a ? b : c
+           (re-search-backward "\\?" (line-beginning-position) t 1))
+         (electric-spacing-insert ":"))
+        ((save-excursion                ; for (const auto& el : v)
+           (re-search-backward "for" (line-beginning-position) t 1))
          (electric-spacing-insert ":"))
         (t
          (electric-spacing-insert ":" 'after)))
@@ -59,7 +63,8 @@
   ;; | printf("%d", *ip);
   ;; | func(*p);
   ;; `----
-  (cond ((looking-back (concat (electric-spacing-c-types) " *") nil)
+  (cond ((or (looking-back (concat (electric-spacing-c-types) " *") nil)
+             (looking-back (concat "auto *") nil))
          (electric-spacing-insert "*" 'before))
         ((looking-back "\\* *" nil)
          (electric-spacing-insert "*" 'middle))
@@ -79,23 +84,21 @@
   "See `electric-spacing-insert'."
   ;; ,----[ cases ]
   ;; | char &a = b; // FIXME
-  ;; | void foo(const int& a);
-  ;; | char *a = &b;
   ;; | int c = a & b;
   ;; | a && b;
-  ;; | scanf ("%d", &i);
-  ;; | func(&i)
   ;; `----
-  (cond ((looking-back (concat (electric-spacing-c-types) " *") nil)
+  (cond ((or (looking-back (concat (electric-spacing-c-types) " *") nil) ; void foo(const int& a);
+             (looking-back (concat "string *") nil)
+             (looking-back (concat "auto *") nil))
          (electric-spacing-insert "&" 'after))
-        ((looking-back "= *" nil)
+        ((looking-back "= *" nil)       ; char* a = &b;
          (electric-spacing-insert "&" 'before))
-        ((looking-back "( *" nil)
+        ((looking-back "( *" nil)       ; func(&i)
          (electric-spacing-insert "&" 'middle))
-        ((looking-back ", *" nil)
+        ((looking-back ", *" nil)       ; scanf ("%d", &i);
          (electric-spacing-insert "&" 'before))
         (t
-         (electric-spacing-insert "&" 'middle))))
+         (electric-spacing-insert "&"))))
 
 (defun electric-spacing-cc-mode-< ()
   "See `electric-spacing-insert'."
