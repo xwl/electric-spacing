@@ -48,7 +48,8 @@
            (re-search-backward "for" (line-beginning-position) t 1))
          (electric-spacing-insert ":"))
         (t
-         (electric-spacing-insert ":" 'after)))
+         ;; Do not delete spaces after, as it will affect code completion.
+         (insert ":")))
   (indent-according-to-mode))
 
 (defun electric-spacing-cc-mode-* ()
