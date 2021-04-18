@@ -158,9 +158,6 @@
       (insert "%")
     (electric-spacing-insert "%")))
 
-(defun electric-spacing-cc-mode-\( ()
-  (electric-spacing-insert "(" 'middle))
-
 (defun electric-spacing-cc-mode-. ()
   (electric-spacing-insert "." 'middle))
 
