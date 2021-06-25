@@ -174,12 +174,15 @@
 
 (defun electric-spacing-cc-mode-\; ()
   "See `electric-spacing-insert'."
-  (electric-spacing-insert ";" 'after)
-  (indent-according-to-mode)
-  (unless (save-excursion
-            (re-search-backward "for ?(" (line-beginning-position) t 1))
-    (newline)
-    (indent-according-to-mode)))
+  (electric-spacing-insert ";" 'middle)
+  (indent-according-to-mode))
+
+(defun electric-spacing-cc-mode-= ()
+  "See `electric-spacing-insert'."
+  (if (looking-back "operator[ =]*")
+      (electric-spacing-insert "=" 'middle)
+    (electric-spacing-insert "="))
+  (indent-according-to-mode))
 
 (provide 'electric-spacing-cc-mode)
 ;;; electric-spacing-cc-mode.el ends here

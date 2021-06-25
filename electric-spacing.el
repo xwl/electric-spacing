@@ -120,7 +120,7 @@ is very handy for many programming languages."
          (electric-spacing-insert-1 op only-where))))
 
 (defun electric-spacing-insert-1 (op &optional only-where)
-  "Insert operator OP with surrounding spaces.
+  "Insert operator OP with surrounding spaces (and clean other redundant spaces).
 e.g., `=' becomes ` = ', `+=' becomes ` += '.
 
 When `only-where' is 'after, we will insert space at back only;
