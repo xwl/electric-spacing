@@ -36,5 +36,15 @@
 (defun electric-spacing-org-mode-/ ()
   (electric-spacing-org-mode-inline-marker "/"))
 
+(defun electric-spacing-org-mode-+ ()
+  (interactive)
+  (if (looking-back "#")
+      (electric-spacing-insert "+" 'middle)
+    (electric-spacing-insert "+")))
+
+(with-eval-after-load 'org
+  (define-key org-mode-map (kbd "+") 'electric-spacing-org-mode-+)
+  )
+
 (provide 'electric-spacing-org-mode)
 ;;; electric-spacing-org-mode.el ends here

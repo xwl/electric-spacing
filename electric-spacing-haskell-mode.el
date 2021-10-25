@@ -1,6 +1,6 @@
-;;; electric-spacing-emacs-lisp-mode.el--- Text mode tunings
+;;; electric-spacing-text-mode.el--- Text mode tunings
 
-;; Copyright (C) 2020 Free Software Foundation, Inc.
+;; Copyright (C) 2021 Free Software Foundation, Inc.
 
 ;; Author: William Xu <william.xwl@gmail.com>
 
@@ -23,12 +23,22 @@
 
 (require 'electric-spacing)
 
-(defun electric-spacing-emacs-lisp-mode-- ()
-  (insert "-"))
+;; (defun electric-spacing-haskell-mode-: ()
+;;   (electric-spacing-insert ":"))
 
-(defun electric-spacing-emacs-lisp-mode-: ()
-  (delete-horizontal-space)
-  (electric-spacing-insert-1 ":" 'before))
+;;   (if (eq 32 (char-after (line-beginning-position)))
+;;       (electric-spacing-insert ":" 'middle)
+;;     ;; define function signature
+;;     (electric-spacing-insert ":")))
 
-(provide 'electric-spacing-emacs-lisp-mode)
-;;; electric-spacing-emacs-lisp-mode.el ends here
+(defun electric-spacing-haskell-mode-. ()
+  (if (save-excursion (goto-char (line-beginning-position))
+                      (looking-at "import"))
+      (electric-spacing-insert "." 'middle)
+    (electric-spacing-insert ".")))
+
+(defun electric-spacing-haskell-mode-- ()
+    (electric-spacing-insert "-"))
+
+(provide 'electric-spacing-haskell-mode)
+;;; electric-spacing-haskell-mode.el ends here
