@@ -26,7 +26,7 @@
 (defun electric-spacing-org-mode-inline-marker (op)
   "For inserting inline markers, like *bold* or /italic/."
   ;; headline
-  (if (looking-back (format "^ +\\|^\\%s+ *" op) (line-beginning-position))
+  (if (or (bolp) (looking-back (format "^ +\\|^\\%s+ *" op) (line-beginning-position)))
       (electric-spacing-insert op 'after)
     ;; pairs like emphasize mark
     (let ((prev (save-excursion
@@ -42,7 +42,7 @@
               (setq emphasize-start (and emphasize-start (not (looking-at " ")))))
             (when emphasize-start
               (electric-spacing-insert op 'after)
-              (throw 'exit))))
+              (throw 'exit nil))))
         (electric-spacing-insert op 'before)))))
 
 (defun electric-spacing-org-mode-* ()
